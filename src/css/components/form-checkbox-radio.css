@@ -1,0 +1,167 @@
+.form-field .checkbox,
+.form-field .radio {
+    opacity: 0;
+}
+
+.form-field .radio-label,
+.form-field .checkbox-label {
+    font-weight: var(--fw-medium);
+    display: block;
+    cursor: pointer;
+    line-height: 20px;
+    position: relative;
+}
+
+.form-field--expanded .radio-label,
+.form-field--expanded .checkbox-label {
+    display: inline-block;
+}
+
+.form-field .checkbox,
+.form-field .checkbox-label::before,
+.form-field .checkbox-label::after,
+.form-field .radio,
+.form-field .radio-label::before,
+.form-field .radio-label::after {
+    position: absolute;
+    cursor: pointer;
+}
+
+.form-field .checkbox,
+.form-field .checkbox-label::before,
+.form-field .checkbox-label::after,
+.form-field .radio,
+.form-field .radio-label::before {
+    inline-size: 20px;
+    block-size: 20px;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+}
+
+.form-field .radio-label::after {
+    inline-size: 12px;
+    block-size: 12px;
+    inset-block-start: 4px;
+    inset-inline-start: 4px;
+    background-color: var(--surface-success);
+}
+
+.form-field .checkbox-label,
+.form-field .radio-label:not(.radio-label--finance) {
+    padding-inline-start: var(--space-xl);
+}
+
+.form-field .checkbox-label::before,
+.form-field .checkbox-label::after,
+.form-field .radio-label::before,
+.form-field .radio-label::after {
+    content: '';
+    display: block;
+}
+
+.form-field .checkbox-label::before,
+.form-field .radio-label::before {
+    border: 1px solid var(--border-primary);
+    transition: var(--transition-s) border-color ease, var(--transition-s) background-color ease, var(--transition-s) outline-color ease;
+    outline: 1px solid var(--surface-primary);
+    background-color: var(--surface-primary);
+}
+
+.form-field .checkbox-label::before {
+    border-radius: var(--br-s);
+}
+
+.form-field .radio-label::before,
+.form-field .radio-label::after {
+    border-radius: var(--br-l);
+}
+
+.form-field .checkbox-label:hover::before,
+.form-field .checkbox:hover + .checkbox-label::before,
+.form-field .radio-label:hover::before,
+.form-field .radio:hover + .radio-label::before {
+    outline-color: var(--border-active);
+    border-color: var(--border-active);
+}
+
+.form-field .checkbox-label::after,
+.form-field .radio-label::after {
+    opacity: 0;
+}
+
+.form-field .checkbox-label::after {
+    background-image: url("/img/icons/check.svg");
+    background-repeat: no-repeat;
+    background-size: 14px auto;
+    background-position: 50% 50%;
+}
+
+.form-field .checkbox:checked + .checkbox-label::before {
+    background-color: var(--surface-dark);
+}
+
+.form-field .checkbox:checked + .checkbox-label::before,
+.form-field .radio:checked + .radio-label::before {
+    border-color: var(--border-active);
+    outline-color: var(--surface-primary);
+}
+
+.form-field .checkbox:checked + .checkbox-label::after,
+.form-field .radio:checked + .radio-label::after {
+    opacity: 1;
+}
+
+.form-field :is(.checkbox:invalid, .checkbox.is_invalid) + .checkbox-label::before,
+.form-field :is(.radio:invalid, .radio.is_invalid) + .radio-label::before {
+    border-color: var(--border-critical);
+    outline-color: var(--surface-critical);
+}
+
+.form-field .radio-label--finance {
+    background-image: linear-gradient(to right, var(--surface-secondary) 0, var(--surface-secondary) 44px, transparent 44px);
+    border-radius: var(--br-s) 0 0 var(--br-s);
+    transition: var(--transition-s) background-color ease;
+    block-size: 100%;
+    position: absolute;
+    z-index: 2;
+    inline-size: 100%;
+    padding: var(--space) var(--space) var(--space) 58px;
+    display: grid;
+    gap: var(--space);
+    grid-template-columns: max-content 1fr;
+    align-content: start;
+}
+
+.form-field:has(> :checked) .radio-label--finance {
+    background-image: linear-gradient(to right, var(--surface-tertiary) 0, var(--surface-tertiary) 44px, transparent 44px);
+}
+
+.form-field .radio-label--finance::before,
+.form-field .radio-label--finance::after {
+    inset-block-start: 50%;
+    inset-inline-start: 20px;
+    translate: -50% -50%;
+}
+
+.form-field .radio-label--finance::before {
+    border-color: var(--border-active);
+    outline-color: transparent;
+}
+
+.form-field .radio-label--finance .finance-name {
+    font-weight: var(--fw-medium);
+    align-self: center;
+}
+
+.form-field .radio-label--finance .finance-logo {
+    block-size: var(--space);
+    inline-size: auto;
+    display: flex;
+    gap: var(--space-xs);
+    place-self: center end;
+}
+
+.form-field .radio-label--finance .finance-logo svg {
+    inline-size: auto;
+    block-size: 100%;
+}

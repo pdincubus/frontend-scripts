@@ -1,0 +1,79 @@
+.button {
+    text-decoration: none;
+    border-radius: var(--br-s);
+    cursor: pointer;
+    padding: 0 var(--space-l);
+    font-size: var(--fs);
+    font-weight: var(--fw-medium);
+    border-width: 2px;
+    border-style: solid;
+    text-align: center;
+    transition: var(--transition-s) background-color ease, var(--transition-s) border-color ease, var(--transition-s) color ease;
+}
+
+.button:not(.button--attached) {
+    display: block;
+    inline-size: 100%;
+    block-size: 48px;
+    line-height: 44px;
+
+    @media (--from-tablet) {
+        max-inline-size: 340px;
+    }
+}
+
+.button:not(.button--secondary) {
+    background-color: var(--button-surface);
+    border-color: var(--button-surface);
+    color: var(--button-text);
+}
+
+.button--attached {
+    border-radius: 0 calc(var(--br-s) - 1px) calc(var(--br-s) - 1px) 0;
+    display: inline-block;
+    block-size: 47px;
+    line-height: 42px;
+}
+
+.button:focus-visible {
+    outline: 3px solid var(--button-outline);
+    outline-offset: 3px;
+}
+
+.button:not(.button--secondary):hover {
+    background-color: var(--button-surface-hover);
+    border-color: var(--button-surface-hover);
+}
+
+.button:not(.button--secondary):focus {
+    background-color: var(--button-surface-pressed);
+    border-color: var(--button-surface-pressed);
+}
+
+.button:not(.button--secondary):focus-visible {
+    background-color: var(--button-surface-hover);
+    border-color: var(--button-surface-hover);
+}
+
+.button--secondary {
+    background-color: var(--button-surface-secondary);
+    border-color: var(--button-surface-secondary);
+    color: var(--button-text-secondary);
+}
+
+.button--secondary:hover {
+    background-color: var(--button-surface-hover-secondary);
+    border-color: var(--button-surface-hover-secondary);
+    color: var(--button-text-secondary);
+}
+
+.button--secondary:focus {
+    background-color: var(--button-surface-pressed-secondary);
+    border-color: var(--button-surface-pressed-secondary);
+    color: var(--button-text-secondary);
+}
+
+.button--secondary:focus-visible {
+    background-color: var(--button-surface-hover-secondary);
+    border-color: var(--button-surface-hover-secondary);
+}

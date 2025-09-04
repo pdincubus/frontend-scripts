@@ -1,0 +1,37 @@
+.vh {
+    position: absolute;
+    overflow: hidden;
+    /* stylelint-disable */
+    clip: rect(0 0 0 0);
+    /* stylelint-enable */
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+}
+
+.vh--is-focusable:active,
+.vh--is-focusable:focus {
+    position: fixed;
+    overflow: visible;
+    /* stylelint-disable */
+    clip: auto;
+    /* stylelint-enable */
+    inline-size: auto;
+    block-size: auto;
+    margin: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    outline: 0;
+}
+
+a.vh--is-focusable {
+    padding: var(--space-s);
+    color: var(--text-inverse);
+    background-color: var(--surface-brand-inverse);
+}
+
+.a11y-nav-link.vh--is-focusable {
+    border-radius: 0 0 var(--br-s);
+}

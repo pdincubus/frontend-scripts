@@ -1,0 +1,120 @@
+.foot-nav {
+    grid-area: n;
+    border-block-start: 1px solid var(--border-secondary);
+    display: flex;
+
+    @media (--from-tablet) {
+        padding-block: var(--space-l);
+        gap: var(--space-l);
+    }
+
+    @media (--mobile) {
+        gap: var(--space-l) var(--grid-gap);
+        padding-block: var(--space-l) 0;
+        flex-direction: column;
+    }
+
+    @media (--tablet) {
+        flex-wrap: wrap;
+    }
+}
+
+.foot-nav .nav-section {
+    @media (--desktop) {
+        flex: 0 1 25%;
+    }
+
+    @media (--tablet) {
+        flex: 0 1 48%;
+
+        &:nth-child(1) {
+            order: 1;
+        }
+
+        &:nth-child(2) {
+            order: 4;
+        }
+
+        &:nth-child(3) {
+            order: 2;
+        }
+
+        &:nth-child(4) {
+            order: 3;
+        }
+    }
+}
+
+.foot-nav .toggle {
+    border: 0;
+    padding: 0;
+    background-color: transparent;
+    text-align: start;
+    outline: 0;
+
+    @media (--mobile) {
+        cursor: pointer;
+        position: relative;
+        display: block;
+        inline-size: 100%;
+
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            inset-block-start: 50%;
+            inset-inline-end: 0;
+            translate: 0 -50%;
+            inline-size: 20px;
+            block-size: 20px;
+            background-image: url("/img/icons/chevron-down.svg");
+            background-size: contain;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            transition: var(--transition-s) rotate ease;
+        }
+
+        &.is_active::after {
+            rotate: 180deg;
+        }
+    }
+}
+
+.foot-nav .nav-section .nav-links {
+    list-style: none;
+    padding-inline-start: 0;
+    margin-block: 0;
+
+    @media (--mobile) {
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
+        transition: var(--transition-s) opacity ease, var(--transition-s) block-size ease;
+
+        &.is_active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+}
+
+.foot-nav .nav-section .title,
+.foot-nav .nav-section li:not(:last-of-type) {
+    margin-block-end: var(--space-s);
+}
+
+.foot-nav .nav-section .title {
+    font-size: var(--fs-l);
+}
+
+.foot-nav a {
+    font-size: var(--fs-s);
+    color: var(--text-primary);
+    text-decoration-color: transparent;
+    transition: var(--transition-s) text-decoration-color ease;
+
+    &:hover,
+    &:focus {
+        text-decoration-color: var(--text-primary);
+    }
+}

@@ -1,0 +1,53 @@
+/* stylelint-disable */
+@view-transition {
+    navigation: auto;
+}
+/* stylelint-enable */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+@media (--added-motion) {
+    :root {
+        /* stylelint-disable */
+        interpolate-size: allow-keywords;
+        /* stylelint-enable */
+    }
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+    display: block;
+}
+
+picture, video, canvas, svg {
+    max-inline-size: 100%;
+}
+
+input, button, textarea, select {
+    font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    /* stylelint-disable */
+    text-wrap: balance;
+    /* stylelint-enable */
+}
+
+.link-a11y {
+    border-radius: var(--br-s);
+    outline-offset: 4px;
+    outline-color: var(--a11y-outline-brand);
+    outline-width: 2px;
+}

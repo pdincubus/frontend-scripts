@@ -1,0 +1,117 @@
+.tooltip {
+    display: inline-block;
+    /* stylelint-disable */
+    anchor-name: --tooltip;
+    /* stylelint-enable */
+}
+
+.tooltip .toggle {
+    border-radius: var(--br-l);
+    background-color: var(--surface-tertiary);
+    border: 0;
+    padding: 0;
+    margin-inline: var(--space-xs);
+    text-indent: 110%;
+    white-space: nowrap;
+    overflow: hidden;
+    inline-size: 16px;
+    block-size: 16px;
+    position: relative;
+    cursor: pointer;
+    transition: var(--transition-s) background-color ease;
+    display: block;
+
+    &:hover,
+    &:focus {
+        background-color: var(--surface-tertiary-hover);
+    }
+}
+
+.tooltip .active,
+.tooltip.is_active .inactive {
+    display: none;
+}
+
+.tooltip.is_active .active {
+    display: block;
+}
+
+.tooltip :is(.active, .inactive) {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+}
+
+.tooltip .icon {
+    inline-size: auto;
+    block-size: 12px;
+}
+
+.tooltip .icon path {
+    transition: var(--transition-s) fill ease;
+}
+
+.tooltip:hover .icon path,
+.tooltip:focus .icon path {
+    fill: var(--icon-inverse);
+}
+
+.tooltip .content {
+    /* stylelint-disable */
+    position-anchor: --tooltip;
+    /* stylelint-enable */
+    font-size: var(--fs-s);
+    z-index: 10;
+    max-inline-size: 280px;
+    inline-size: 100%;
+    pointer-events: none;
+    opacity: 0;
+    padding: var(--space);
+    position: absolute;
+    border-radius: var(--br-m);
+    background-color: var(--surface-primary);
+    filter: drop-shadow(var(--shadow-filter-l));
+    inset-block-start: calc(3 * var(--space));
+    inset-inline-start: 50%;
+    translate: -12px -4px;
+    transition: var(--transition-s) opacity ease, var(--transition-s) translate ease;
+}
+
+/*
+    Based on: https://codyhouse.co/blog/post/css-rounded-triangles-with-clip-path
+*/
+.tooltip .content::before {
+    display: block;
+    content: '';
+    position: absolute;
+    inset-block-start: -8px;
+    inset-inline-start: calc(var(--space) + 2px);
+    block-size: 20px;
+    inline-size: 20px;
+    background-color: inherit;
+    border: inherit;
+    clip-path: polygon(0% 0%, 100% 0, 0% 100%);
+    transform: rotate(45deg);
+    border-radius: var(--br-s) 0 0 0;
+}
+
+.tooltip.is_active .content {
+    opacity: 1;
+    pointer-events: auto;
+    translate: -12px 0;
+}
+
+/* stylelint-disable */
+@supports (inset-block-start: anchor(end)) {
+    .tooltip .content {
+        inset-block-start: calc(anchor(end) + var(--space));
+        inset-inline-start: calc(anchor(start) - var(--space-s));
+        translate: 0 -4px;
+    }
+
+    .tooltip.is_active .content {
+        translate: 0;
+    }
+}
+/* stylelint-enable */

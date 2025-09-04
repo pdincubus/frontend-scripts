@@ -1,0 +1,23 @@
+.form-field .help {
+    color: var(--text-secondary);
+    font-size: var(--fs-s);
+}
+
+.form-field :is(.input, .select, .textarea) + .help {
+    margin-block-start: var(--space-s);
+}
+
+.form-field .help + :is(.input, .select, .textarea) {
+    margin-block-start: var(--space-xs);
+}
+
+.form-field .help a {
+    color: var(--text-primary);
+    transition: var(--transition-s) text-decoration-color ease;
+    font-weight: var(--fw-medium);
+
+    &:hover,
+    &:focus {
+        text-decoration-color: transparent;
+    }
+}

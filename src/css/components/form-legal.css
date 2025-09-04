@@ -1,0 +1,24 @@
+.form-field .legal-text {
+    display: block;
+    font-size: var(--fs-s);
+    color: var(--text-secondary);
+    margin-block-start: var(--space-s);
+}
+
+.form-field .checkbox-label + .legal-text {
+    padding-inline-start: var(--space-xl);
+}
+
+.form-field .legal-text a {
+    color: var(--text-primary);
+    transition: var(--transition-s) text-decoration-color ease;
+
+    &:hover,
+    &:focus {
+        text-decoration-color: transparent;
+    }
+}
+
+.form-field .legal-intro {
+    margin-block-end: var(--space);
+}

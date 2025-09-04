@@ -1,0 +1,57 @@
+.form-field .input,
+.form-field .textarea,
+.form-field select {
+    border: 1px solid var(--border-primary);
+    border-radius: var(--br-s);
+    padding: calc(var(--space-s) + 2px) var(--space);
+    font-size: var(--fs);
+    background-color: var(--surface-primary);
+    inline-size: 100%;
+    transition: var(--transition-s) background-color ease, var(--transition-s) border-color ease, var(--transition-s) outline-color ease;
+
+    &:hover {
+        background-color: var(--surface-primary-hover);
+    }
+
+    &:is(:invalid, .is_invalid):not(:empty) {
+        border-color: var(--border-critical);
+        outline-color: var(--border-critical);
+    }
+}
+
+.form-field .input,
+.form-field .textarea {
+    outline: 1px solid var(--surface-primary);
+
+    &:focus {
+        border-color: var(--border-active);
+        background-color: var(--surface-primary);
+        outline-color: var(--border-active);
+    }
+}
+
+.form-field .input,
+.form-field select {
+    line-height: 1;
+}
+
+.form-field .input--dob,
+.form-field .input--small {
+    max-inline-size: 50%;
+}
+
+.form-field--combined {
+    position: relative;
+    padding-block-end: var(--space);
+}
+
+.form-field--combined .input:focus,
+.form-field--combined .input:invalid {
+    outline-color: transparent;
+}
+
+.form-field--combined .button {
+    position: absolute;
+    inset-block-start: 1px;
+    inset-inline-end: 1px;
+}

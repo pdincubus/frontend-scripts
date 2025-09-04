@@ -1,0 +1,32 @@
+.payment-methods {
+    grid-area: m;
+    display: flex;
+    gap: var(--space-s) var(--space);
+    align-items: center;
+
+    @media (--from-tablet) {
+        justify-content: end;
+    }
+
+    @media (--mobile) {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+.payment-methods .text {
+    font-size: var(--fs-s);
+    white-space: nowrap;
+
+    @media (--mobile) {
+        flex: 0 0 100%;
+        text-align: center;
+    }
+}
+
+.payment-methods .icon {
+    max-block-size: var(--space-xl);
+    max-inline-size: 48px;
+    inline-size: 100%;
+    block-size: auto;
+}

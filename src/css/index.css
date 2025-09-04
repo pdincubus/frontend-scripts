@@ -1,0 +1,18 @@
+@layer legacy, settings, utilities, common, layout, components, theme, hacks;
+
+@import url('settings/media') layer(settings);
+@import url('settings/fonts') layer(settings);
+
+@import url('layout/layouts') layer(layout);
+@import url('layout/main') layer(layout);
+
+@import url('components/site-head') layer(components);
+@import url('components/site-foot') layer(components);
+@import url('components/global-nav') layer(components);
+@import url('components/usp-bar') layer(components);
+@import url('components/site-search') layer(components);
+@import url('components/shop-functions') layer(components);
+@import url('components/main-nav') layer(components);
+@import url('components/foot-pre-nav') layer(components);
+@import url('components/foot-nav') layer(components);
+@import url('components/social-nav') layer(components);

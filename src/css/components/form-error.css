@@ -1,0 +1,22 @@
+.form-field .error-message {
+    margin-block-start: var(--space-xs);
+    font-size: var(--fs-s);
+    display: flex;
+    gap: var(--space-xs);
+    color: var(--text-critical);
+    align-items: center;
+}
+
+.form-field .error-message .error-icon {
+    border-radius: var(--br-l);
+    background-color: var(--surface-critical);
+    display: grid;
+    place-content: center;
+    inline-size: 16px;
+    block-size: 16px;
+}
+
+.form-field .error-message .icon {
+    block-size: 10px;
+    inline-size: auto;
+}

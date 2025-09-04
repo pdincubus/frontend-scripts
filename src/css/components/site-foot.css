@@ -1,0 +1,73 @@
+.site-foot {
+    grid-area: f;
+    display: grid;
+    grid-template-columns: var(--grid-cols);
+    padding: var(--space);
+
+    @media (--desktop) {
+        margin-inline: var(--grid-margin);
+        
+        /*
+            p = pre nav links (icons)
+            n = footer nav
+            s = social links
+            m = payment methods
+            c = copyright notice
+        */
+        grid-template-areas:
+            "p p p p p p p p p p p p"
+            "n n n n n n n n n n n n"
+            "s s s s s s m m m m m m"
+            "c c c c c c c c c c c c"
+        ;
+    }
+
+    @media (--tablet) {
+        grid-template-areas:
+            "p p p p p p"
+            "n n n n n n"
+            "s s s m m m"
+            "c c c c c c"
+        ;
+    }
+
+    @media (--from-tablet) {
+        gap: var(--grid-gap);
+    }
+
+    @media (--mobile) {
+        gap: var(--space-l) var(--grid-gap);
+        grid-template-areas:
+            "p p p p"
+            "n n n n"
+            "m m m m"
+            "s s s s"
+            "c c c c"
+        ;
+    }
+}
+
+.site-foot .copyright {
+    grid-area: c;
+    font-size: var(--fs-xs);
+    color: var(--text-secondary);
+
+    @media (--mobile) {
+        text-align: center;
+    }
+}
+
+.site-foot .copyright p {
+    margin-block: 0 var(--space-s);
+}
+
+.site-foot .copyright a {
+    color: var(--text-secondary);
+    transition: var(--transition-s) text-decoration-color ease;
+    font-weight: var(--fw-medium);
+
+    &:hover,
+    &:focus {
+        text-decoration-color: transparent;
+    }
+}

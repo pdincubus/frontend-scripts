@@ -1,0 +1,98 @@
+.form-field .select--small {
+    max-inline-size: 50%;
+}
+
+/* stylelint-disable */
+.form-field select,
+.form-field ::picker(select) {
+  appearance: base-select;
+}
+/* stylelint-enable */
+
+.form-field select {
+    position: relative;
+    outline: 1px solid var(--surface-primary);
+    cursor: pointer;
+}
+
+/* stylelint-disable */
+.form-field select:open {
+    border-color: var(--border-active) var(--border-active) var(--border-inverse);
+    border-radius: var(--br-s) var(--br-s) 0 0;
+    outline-color: var(--border-active);
+}
+
+.form-field select::picker(select) {
+    position: absolute;
+    inset-block-start: anchor(bottom);
+    border-radius: 0 0 var(--br-s) var(--br-s);
+    border-width: 1px;
+    border-color: var(--border-primary);
+    transition: var(--transition-s) display allow-discrete;
+    outline: 1px solid var(--border-inverse);
+    max-inline-size: 340px;
+}
+
+.form-field select:not(:open)::picker(select) {
+    opacity: 0;
+    outline: 1px solid transparent;
+}
+
+.form-field select:open::picker(select) {
+    opacity: 1;
+    outline-color: var(--border-active);
+    border-color: var(--border-active);
+
+    @starting-style {
+        opacity: 0;
+    }
+}
+
+.form-field select::picker-icon {
+    content: '';
+    margin-inline: 0;
+    inline-size: 16px;
+    block-size: 16px;
+    background-color: transparent;
+    background-size: 16px auto;
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-image: url("/img/icons/chevron-down.svg");
+    transition: var(--transition-s) rotate ease;
+    position: absolute;
+    inset-inline-end: var(--space);
+    inset-block-start: calc(var(--space) - 2px);
+}
+
+.form-field select:open::picker-icon {
+    rotate: 180deg;
+}
+/* stylelint-enable */
+
+.form-field select option {
+    padding: var(--space);
+    display: flex;
+    cursor: pointer;
+}
+
+/* stylelint-disable */
+.form-field select option::checkmark {
+    order: 2;
+    flex: 0 0 16px;
+    block-size: 16px;
+    margin-inline-start: auto;
+    content: '';
+    background-size: 16px auto;
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-image: url("/img/icons/check-black.svg");
+}
+/* stylelint-enable */
+
+.form-field select option:not(:first-of-type) {
+    border-block-start: 1px solid var(--border-secondary);
+}
+
+.form-field select option:first-of-type {
+    border-block-start: 0;
+}

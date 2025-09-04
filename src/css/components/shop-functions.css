@@ -1,0 +1,6 @@
+.shop-functions {
+    grid-area: a;
+    justify-self: end;
+    display: flex;
+    gap: var(--space-m);
+}

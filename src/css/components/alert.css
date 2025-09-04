@@ -1,0 +1,126 @@
+.alert {
+    border-radius: var(--br-m);
+    background-color: var(--surface-secondary);
+    padding: var(--space);
+    gap: var(--space-xs);
+    position: relative;
+    display: none;
+    align-items: center;
+}
+
+.alert:not(.alert--promo-success, .alert--promo-error) {
+    transition: var(--transition-s) display ease allow-discrete;
+    grid-template-areas:
+        "b i t"
+        "b i c"
+        "b i c";
+
+    &::before,
+    &::after {
+        content: '';
+        display: block;
+    }
+
+    &::before {
+        grid-area: b;
+        border-radius: var(--br-s);
+        inline-size: 4px;
+        block-size: 100%;
+    }
+
+    &::after {
+        grid-area: i;
+        inline-size: 20px;
+        block-size: 20px;
+        border-radius: var(--br-l);
+        background-repeat: no-repeat;
+        background-size: auto 14px;
+        background-position: 50% 50%;
+    }
+
+    @media (--from-tablet) {
+        max-inline-size: 384px;
+    }
+}
+
+.alert.is_active {
+    display: grid;
+}
+
+.alert--promo-success,
+.alert--promo-error {
+    grid-template-areas:
+        "t" "c";
+
+    @media (--from-tablet) {
+        max-inline-size: 340px;
+    }
+}
+
+.alert--promo-success .title {
+    color: var(--text-success);
+}
+
+.alert--promo-error .title {
+    color: var(--text-secondary);
+}
+
+.alert:not(:last-child) {
+    margin-block-end: var(--space-l);
+}
+
+.alert:has(+ .alert) {
+    margin-block-end: var(--space-s);
+}
+
+.alert--info {
+    &::before,
+    &::after {
+        background-color: var(--surface-info);
+    }
+
+    &::after {
+        background-image: url("/img/icons/info.svg");
+    }
+}
+
+.alert .title {
+    grid-area: t;
+    font-size: var(--fs);
+}
+
+.alert .alert-close {
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    position: absolute;
+    inset-block-start: var(--space-s);
+    inset-inline-end: var(--space-s);
+    border: 0;
+    padding: 0;
+    inline-size: 24px;
+    block-size: 24px;
+    background-color: transparent;
+    border-radius: var(--br-s);
+    transition: var(--transition-s) background-color ease;
+
+    &:hover,
+    &:focus {
+        background-color: var(--surface-secondary-hover);
+    }
+}
+
+.alert .alert-close .icon {
+    inline-size: 16px;
+    block-size: auto;
+}
+
+.alert .content {
+    grid-area: c;
+    line-height: var(--lh-m);
+    font-size: var(--fs-s);
+}
+
+.alert small {
+    color: var(--text-secondary);
+}

@@ -1,0 +1,4 @@
+a:focus-visible {
+    outline-color: var(--a11y-outline-brand);
+    outline-width: 2px;
+}

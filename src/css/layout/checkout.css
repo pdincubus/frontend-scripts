@@ -1,0 +1,32 @@
+main {
+    @media (--desktop) {
+        margin-inline: var(--grid-margin);
+    }
+}
+
+.content--checkout {
+    /*
+        i = category intro block
+        q = queries/filters
+    */
+    @media (--desktop) {
+        grid-template-areas:
+            "i i i i i i i i i i i i"
+            "q q q q m m m m m m m m"
+        ;
+    }
+
+    @media (--tablet) {
+        grid-template-areas:
+            "i i i i i i"
+            "q q m m m m"
+        ;
+    }
+
+    @media (--mobile) {
+        grid-template-areas:
+            "i i"
+            "q q"
+        ;
+    }
+}

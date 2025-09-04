@@ -1,0 +1,37 @@
+:root {
+    /* Freemans-specific */
+    --c-freemans-100: hsl(16deg 89% 89%);
+    --c-freemans-200: hsl(15deg 91% 79%);
+    --c-freemans-300: hsl(16deg 90% 68%);
+    --c-freemans-400: hsl(15deg 91% 58%);
+    --c-freemans-500: hsl(16deg 100% 47%);
+    --c-freemans-600: hsl(15deg 100% 38%);
+    --c-freemans-700: hsl(16deg 100% 28%);
+    --c-freemans-800: hsl(15deg 100% 19%);
+    --c-freemans-900: hsl(16deg 100% 9%);
+
+    /* Random freemans colours - not used much */
+    --c-citrine: hsl(58deg 100% 48%); /* clearance sale */
+    --c-fuchsia: hsl(336deg 85% 55%); /* beauty offer */
+    --c-leaf: hsl(154deg 70% 38%); /* home & garden offers */
+    --c-azure: hsl(185deg 76% 44%); /* electrical offers */
+    --c-grape: hsl(290deg 53% 36%); /* gift offers */
+    --c-midnight: hsl(248deg 53% 14%); /* brands offers */
+
+    /* Background/surfaces */
+    --surface-brand: var(--c-freemans-500);
+    --surface-brand-hover: var(--c-freemans-600);
+    --surface-brand-pressed: var(--c-freemans-800);
+    --surface-brand-inverse: var(--c-midnight);
+
+    /* Text */
+    --text-brand: var(--c-freemans-500);
+    --text-highlight-brand: var(--c-citrine);
+
+    /* Links */
+    --link-brand: var(--c-freemans-500);
+    --link-hover-brand: var(--c-midnight);
+
+    /* Accessibility */
+    --a11y-outline-brand: var(--c-grape);
+}

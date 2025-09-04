@@ -1,0 +1,23 @@
+.usp-bar {
+    grid-area: u;
+    padding: var(--space-xs) var(--space-2xl);
+    background-color: var(--surface-brand-inverse);
+    color: var(--text-inverse);
+    font-size: var(--fs-xs);
+    gap: var(--space);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    @media (--mobile) {
+        display: none;
+    }
+}
+
+.usp-bar .item {
+    font-weight: var(--fw-medium);
+}
+
+.usp-bar .highlight {
+    color: var(--text-highlight-brand);
+}

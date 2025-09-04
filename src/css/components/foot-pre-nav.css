@@ -1,0 +1,22 @@
+.foot-pre-nav {
+    grid-area: p;
+    display: flex;
+    justify-content: center;
+    inline-size: 100%;
+    padding-block: var(--space-m) var(--space-xs);
+
+    @media (--from-tablet) {
+        gap: var(--space-l);
+    }
+
+    @media (--mobile) {
+        gap: var(--space-l) var(--grid-gap);
+        flex-direction: column;
+    }
+}
+
+.foot-pre-nav .icon-block {
+    @media (--from-tablet) {
+        flex: 0 1 25%;
+    }
+}

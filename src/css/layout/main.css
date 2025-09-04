@@ -1,0 +1,188 @@
+main {
+    grid-area: m;
+    padding-inline: var(--space);
+
+    @media (--desktop) {
+        margin-inline: var(--grid-margin);
+    }
+}
+
+main:not(.content--home) {
+    padding-block: var(--space);
+}
+
+.content--home {
+    /* Home content specific layout stuff */
+    padding-block: var(--space);
+}
+
+.content--plp {
+    /*
+        Product listing content specific layout
+
+        i = category intro block
+        q = queries/filters
+    */
+    @media (--desktop) {
+        grid-template-areas:
+            "i i i i i i i i i i i i"
+            "q q q q m m m m m m m m"
+        ;
+    }
+
+    @media (--tablet) {
+        grid-template-areas:
+            "i i i i i i"
+            "q q m m m m"
+        ;
+    }
+
+    @media (--mobile) {
+        grid-template-areas:
+            "i i"
+            "q q"
+        ;
+    }
+}
+
+.content--clp {
+    /*
+        Category listing specific layout
+
+        i = category intro block
+        c = callout hero
+        b = brands
+        l = lead categories
+        a = another callout hero
+        e = even more lead categories
+        m = main content
+    */
+    @media (--desktop) {
+        grid-template-areas:
+            "i i i i i i i i i i i i"
+            "c c c c c c c c c c c c"
+            "b b b b b b b b b b b b"
+            "l l l l l l l l l l l l"
+            "a a a a a a a a a a a a"
+            "e e e e e e e e e e e e"
+            "m m m m m m m m m m m m"
+        ;
+    }
+
+    @media (--tablet) {
+        grid-template-areas:
+            "i i i i i i"
+            "c c c c c c"
+            "b b b b b b"
+            "l l l l l l"
+            "a a a a a a"
+            "e e e e e e"
+            "m m m m m m"
+        ;
+    }
+
+    @media (--mobile) {
+        grid-template-areas:
+            "i i"
+            "c c"
+            "b b"
+            "l l"
+            "a a"
+            "e e"
+            "m m"
+        ;
+    }
+}
+
+.content--pdp {
+    /*
+        Product detail specific layout
+
+        b = breadcrumbs
+        g = gallery
+        o = product options
+        p = product description
+        c = customer reviews
+        r = recommendations
+        m = more from
+        v = recently viewed
+    */
+    @media (--desktop) {
+        grid-template-areas:
+            "b b b b b b b b b b b b"
+            "g g g g g g o o o o o o"
+            "p p p p p p r r r r r r"
+            "c c c c c c r r r r r r"
+            "m m m m m m m m m m m m"
+            "v v v v v v v v v v v v"
+        ;
+    }
+
+    @media (--tablet) {
+        grid-template-areas:
+            "b b b b b b"
+            "g g g g g g"
+            "o o o o o o"
+            "p p p p p p"
+            "c c c c c c"
+            "m m m m m m"
+            "r r r r r r"
+            "v v v v v v"
+        ;
+    }
+
+    @media (--mobile) {
+        grid-template-areas:
+            "b b"
+            "g g"
+            "o o"
+            "p p"
+            "c c"
+            "m m"
+            "r r"
+            "v v"
+        ;
+    }
+}
+
+.content--help {
+    /*
+        Help content specific layout
+
+        n = help categories nav
+        c = help content
+    */
+}
+
+.content--brands {
+    /*
+        Brand directory specific layout
+
+        n = category nav
+        t = top category brands
+        d = A-Z listings
+    */
+    @media (--desktop) {
+        grid-template-areas:
+            "n n n n n n n n n n n n"
+            "t t t t t t t t t t t t"
+            "d d d d d d d d d d d d"
+        ;
+    }
+
+    @media (--tablet) {
+        grid-template-areas:
+            "n n n n n n"
+            "t t t t t t"
+            "d d d d d d"
+        ;
+    }
+
+    @media (--mobile) {
+        grid-template-areas:
+            "n n"
+            "t t"
+            "d d"
+        ;
+    }
+}

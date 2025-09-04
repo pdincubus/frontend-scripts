@@ -1,0 +1,57 @@
+.form-field .update,
+.form-field .info {
+    color: var(--text-link);
+}
+
+.form-field .info {
+    display: flex;
+    gap: var(--space-xs);
+    line-height: var(--lh-m);
+    margin-block-end: var(--space-s);
+}
+
+.form-field .form-field--expanded .info {
+    margin-inline-start: var(--space-xl);
+    margin-block: var(--space-xs) 0;
+}
+
+.form-field .info .type {
+    flex: 0 0 16px;
+    inline-size: 16px;
+    block-size: 16px;
+    border-radius: var(--br-l);
+    background-color: var(--surface-info);
+    display: grid;
+    place-content: center;
+    margin-block-start: var(--space-2xs);
+}
+
+.form-field .info .icon {
+    block-size: 12px;
+    inline-size: auto;
+}
+
+.form-field .update,
+.form-field .edit {
+    transition: var(--transition-s) text-decoration-color ease;
+
+    &:hover,
+    &:focus {
+        color: var(--text-link-hover);
+        text-decoration-color: transparent;
+    }
+}
+
+.form-field + .update {
+    margin-block-start: var(--space);
+    display: inline-block;
+}
+
+.form-field--expanded .update {
+    margin-inline-start: var(--space-xl);
+}
+
+.form-field .edit {
+    color: var(--text-primary);
+    font-weight: var(--fw-medium);
+}

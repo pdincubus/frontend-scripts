@@ -1,0 +1,15 @@
+@layer legacy, settings, utilities, common, layout, components, theme, hacks;
+
+@import url('settings/media') layer(settings);
+@import url('settings/fonts') layer(settings);
+
+@import url('layout/checkout') layer(layout);
+
+@import url('components/checkout-head') layer(components);
+@import url('components/checkout-foot') layer(components);
+
+@import url('components/checkout-section') layer(components);
+@import url('components/password-strength') layer(components);
+@import url('components/order-summary') layer(components);
+@import url('components/promo-code') layer(components);
+@import url('components/bag-totals') layer(components);

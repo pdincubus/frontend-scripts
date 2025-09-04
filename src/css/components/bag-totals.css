@@ -1,0 +1,36 @@
+.bag-totals {
+    gap: var(--space-xs);
+    padding-block-start: var(--space);
+    justify-content: end;
+
+    @media (--from-tablet) {
+        max-inline-size: 340px;
+    }
+}
+
+:not(.promo-code) + .bag-totals {
+    border-block-start: 1px solid var(--border-secondary);
+}
+
+:not(.order-summary) .bag-totals {
+    border-block-end: 1px solid var(--border-secondary);
+    margin-block-end: var(--space-l);
+}
+
+.bag-totals :is(.sub-total, .delivery-total, .grand-total) {
+    display: grid;
+    font-size: var(--fs-s);
+    grid-template-columns: 1fr 100px;
+}
+
+.bag-totals :is(.sub-total, .delivery-total, .grand-total) :is(.value, .text) {
+    justify-self: end;
+}
+
+.bag-totals .grand-total :is(.text, .value) {
+    font-weight: var(--fw-medium);
+ }
+
+.bag-totals .grand-total .value {
+    font-size: var(--fs-m);
+}

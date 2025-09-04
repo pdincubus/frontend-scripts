@@ -1,0 +1,55 @@
+.site-head {
+    grid-area: h;
+    display: grid;
+    align-items: center;
+    gap: var(--grid-gap);
+    padding: var(--space);
+
+    @media (--desktop) {
+        grid-template-columns: var(--grid-cols);
+
+        /*
+            l = logo, s = search, a = account links
+        */
+        grid-template-areas: "l l l l s s s s a a a a";
+        margin-inline: var(--grid-margin);
+    }
+
+    @media (--tablet) {
+        grid-template-columns: max-content max-content repeat(4, 1fr);
+        grid-template-areas: "t l s s a a";
+    }
+
+    @media (--mobile) {
+        grid-template-columns: max-content 1fr 1fr max-content;
+        grid-template-areas:
+            "t l l a"
+            "s s s s"
+        ;
+        border-block-end: 1px solid var(--border-secondary);
+    }
+}
+
+.site-head .logo-link {
+    grid-area: l;
+    display: block;
+    inline-size: auto;
+    aspect-ratio: 200 / 38;
+
+    @media (--from-tablet) {
+        block-size: 32px;
+    }
+
+    @media (--mobile) {
+        block-size: 26px;
+    }
+}
+
+.site-head .logo-link path {
+    transition: var(--transition-s) fill ease;
+}
+
+.site-head .logo-link:hover path,
+.site-head .logo-link:focus path {
+    fill: var(--link-hover-brand);
+}

@@ -1,0 +1,105 @@
+.checkout-foot {
+    background-color: var(--surface-primary);
+    font-size: var(--fs-xs);
+    display: grid;
+    justify-items: center;
+    grid-template-columns: var(--grid-cols);
+    padding: 0 var(--space) var(--space);
+
+    @media (--desktop) {
+        margin-inline: var(--grid-margin);
+        grid-template-areas:
+            "p p p p p p p p p p p p"
+            "n n n n n n n n n n n n"
+            "m m m m m m m m m m m m"
+            "c c c c c c c c c c c c"
+        ;
+    }
+
+    @media (--tablet) {
+        grid-template-areas:
+            "p p p p p p"
+            "n n n n n n"
+            "m m m m m m"
+            "c c c c c c"
+        ;
+    }
+
+    @media (--from-tablet) {
+        gap: 0 var(--grid-gap);
+    }
+
+    @media (--mobile) {
+        gap: 0 var(--space-l);
+        grid-template-areas:
+            "p p p p"
+            "n n n n"
+            "m m m m"
+            "c c c c"
+        ;
+    }
+}
+
+.checkout-foot .checkout-nav,
+.checkout-foot .checkout-additional-nav {
+    display: flex;
+    inline-size: 100%;
+    gap: var(--space-xs) var(--space-l);
+    flex-wrap: wrap;
+    padding-block: var(--space-l);
+
+    @media (--from-tablet) {
+        justify-content: center;
+    }
+}
+
+.checkout-foot .checkout-nav {
+    grid-area: p;
+    font-size: var(--fs-s);
+    border-block: 1px solid var(--border-secondary);
+}
+
+.checkout-foot .checkout-additional-nav {
+    grid-area: n;
+}
+
+.checkout-foot .checkout-nav a,
+.checkout-foot .checkout-additional-nav a {
+    transition: var(--transition-s) text-decoration-color ease;
+    white-space: nowrap;
+    text-decoration-color: transparent;
+
+    @media (--mobile) {
+        flex: 0 1 45%;
+    }
+}
+
+.checkout-foot .checkout-nav a {
+    color: var(--text-primary);
+}
+
+.checkout-foot .copyright,
+.checkout-foot .checkout-additional-nav a {
+    color: var(--text-secondary);
+}
+
+.checkout-foot .checkout-nav a:hover,
+.checkout-foot .checkout-nav a:focus {
+    text-decoration-color: var(--text-primary);
+}
+
+.checkout-foot .checkout-additional-nav a:hover,
+.checkout-foot .checkout-additional-nav a:focus {
+    text-decoration-color: var(--text-secondary);
+}
+
+.checkout-foot .payment-methods {
+    grid-area: m;
+    margin-block-end: var(--space-l);
+}
+
+.checkout-foot .copyright {
+    grid-area: c;
+    font-size: var(--fs-xs);
+    color: var(--text-secondary);
+}

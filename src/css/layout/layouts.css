@@ -1,0 +1,41 @@
+body {
+    display: grid;
+    gap: 0 var(--grid-gap);
+    grid-template-columns: var(--grid-cols);
+
+    /*
+        h = header
+        n = nav
+        u = usp bar
+        m = main content area
+        f = footer
+    */
+    @media (--desktop) {
+        grid-template-areas:
+            "h h h h h h h h h h h h"
+            "n n n n n n n n n n n n"
+            "u u u u u u u u u u u u"
+            "m m m m m m m m m m m m"
+            "f f f f f f f f f f f f"
+        ;
+    }
+
+    @media (--tablet) {
+        grid-template-areas:
+            "h h h h h h"
+            "n n n n n n"
+            "u u u u u u"
+            "m m m m m m"
+            "f f f f f f"
+        ;
+    }
+
+    @media (--mobile) {
+        grid-template-areas:
+            "h h h h"
+            "u u u u"
+            "m m m m"
+            "f f f f"
+        ;
+    }
+}

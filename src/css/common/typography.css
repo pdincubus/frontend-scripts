@@ -1,0 +1,39 @@
+html {
+    font-size: var(--fs);
+}
+
+body {
+    line-height: var(--lh-l);
+    font-family: var(--ff);
+    font-weight: var(--fw-normal);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-s);
+    margin-block-start: 0;
+}
+
+h1:not([class]),
+.main-title {
+    font-size: var(--fs-3xl);
+}
+
+h2:not([class]),
+.sub-title {
+    font-size: var(--fs-2xl);
+}
+
+h3:not([class]),
+.tertiary-title {
+    font-size: var(--fs-xl);
+}
+
+h4:not([class]),
+.quarternary-title {
+    font-size: var(--fs-l);
+}
+
+strong {
+    font-weight: var(--fw-medium);
+}

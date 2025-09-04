@@ -1,0 +1,43 @@
+.checkout-order-summary {
+    display: grid;
+    gap: var(--space);
+    padding-block: 0 var(--space);
+}
+
+.checkout-order-summary .item {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
+    grid-template-areas: "i t t" "i v v" "i . p";
+    gap: 0 var(--space);
+    max-inline-size: 340px;
+    padding-block: var(--space);
+}
+
+.checkout-order-summary .item .title {
+    grid-area: t;
+}
+
+.checkout-order-summary .item .variant {
+    grid-area: v;
+    color: var(--text-secondary);
+    font-size: var(--fs-s);
+}
+
+.checkout-order-summary .item .thumb {
+    grid-area: i;
+    aspect-ratio: 58 / 79;
+    inline-size: 100%;
+    max-inline-size: 58px;
+    block-size: auto;
+}
+
+.checkout-order-summary .item .price {
+    grid-area: p;
+    place-self: end;
+}
+
+.checkout-order-summary .item .title,
+.checkout-order-summary .item .price {
+    font-weight: var(--fw-medium);
+    font-size: var(--fs);
+}
