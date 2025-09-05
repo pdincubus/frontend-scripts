@@ -14,6 +14,7 @@ import sortMediaQueries from "postcss-sort-media-queries";
 import systemUiFont from "postcss-font-family-system-ui";
 import reporter from "postcss-reporter";
 import ts from "gulp-typescript";
+import plumber from "gulp-plumber";
 
 const tsProject = ts.createProject('tsconfig.json');
 
@@ -22,7 +23,7 @@ function watchCss(done) {
     const watcher = gulp.watch(cssFiles);
 
     watcher.on("change", function (path, stats) {
-        console.log(`PostCSS watcher fired for: ${path}`);
+        console.log(`PostCSS watcher fired for: ${path}.`);
 
         compilePostCss(done);
     });
@@ -35,7 +36,7 @@ function watchTs(done) {
     const watcher = gulp.watch(tsFiles);
 
     watcher.on("change", function (path, stats) {
-        console.log(`TypeScript watcher fired for: ${path}`);
+        console.log(`TypeScript watcher fired for: ${path}.`);
 
         compileTypescript();
     });
@@ -70,6 +71,7 @@ function compilePostCss(done) {
 
         return gulp
             .src(entry.inputFile, { sourcemaps: true })
+            .pipe(plumber())
             .pipe(
                 postcss([
                     partialImports,
@@ -114,9 +116,11 @@ function compilePostCss(done) {
 function compileTypescript() {
     return tsProject
         .src()
+        .pipe(plumber())
         .pipe(tsProject())
         .js
-        .pipe(gulp.dest('dist/js'));
+        .pipe(gulp.dest('dist/js'))
+    ;
 }
 
 gulp.task("default", compilePostCss, compileTypescript);

@@ -20,8 +20,7 @@ export function checkSafePlaceVal(safePlaceSelectElem: HTMLSelectElement, otherS
     }
 }
 
-/*
-function CheckMultiDeviceRemoves() {
+/*function CheckMultiDeviceRemoves() {
 	var strAASize = strAAMasterID = strProdId = "", floatPrice = 0.00, intQty = 0;
 	var objItemArray = [];
 	var objAAbag = {};
@@ -73,7 +72,7 @@ export function disableParcelshopNoMapScrolling() {
 	}
 }
 
-export function enableParcelshopNoMapScrolling() {
+/*export function enableParcelshopNoMapScrolling() {
 	if ($(document).height() > $(window).height()) {
 		var scrollTop = parseInt($('html').css('top'));
 		$("html").removeClass("parcelShop-stopScrollWithScrollBar");
