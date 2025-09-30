@@ -10,139 +10,161 @@ import { validateHearAboutUs } from '../utilities/form/validateHearAboutUs.js';
 import { validateDate } from '../utilities/form/validateDate.js';
 import { validateAddress } from '../utilities/form/validateAddress.js';
 
-function formSubmit(
-    firstNameValid: boolean,
-    lastNameValid: boolean,
-    titleValid: boolean,
-    otherTitleValid: boolean,
-    phoneValid: boolean,
-    emailValid: boolean,
-    confirmEmailValid: boolean,
-    passwordValid: boolean,
-    confirmPasswordValid: boolean,
-    dateValid: boolean,
-    accountNumberValid: boolean,
-    hearAboutUsValid: boolean,
-    addressValid: boolean
-): boolean {
-	let allValid = true;
-
-    if (
-        !firstNameValid
-        || !lastNameValid
-        || !titleValid
-        || !otherTitleValid
-        || !phoneValid
-        || !emailValid
-        || !confirmEmailValid
-        || !passwordValid
-        || !confirmPasswordValid
-        || !dateValid
-        || !accountNumberValid
-        || !hearAboutUsValid
-        || !addressValid
-    ) {
-        allValid = false;
-
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-
-	return allValid;
+function getEl<T extends HTMLElement>(id: string): T | null {
+    return document.getElementById(id) as T | null;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    console.info('Personal details JS loaded');
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-    const custDetailsForm = document.getElementById('custDetails') as HTMLFormElement || false;
-    const firstNameInput = document.getElementById('FirstName') as HTMLInputElement || false;
-    const lastNameInput = document.getElementById('LastName') as HTMLInputElement || false;
-    const titleInput = document.getElementById('Title') as HTMLInputElement || false;
-    const otherTitleInput = document.getElementById('otherTitle') as HTMLInputElement || false;
-    const daytimeTelephoneInput = document.getElementById('DayTimeTelephone') as HTMLInputElement || false;
-    const emailInput = document.getElementById('Email') as HTMLInputElement || false;
-    const confirmEmailInput = document.getElementById('ConfirmEmail') as HTMLInputElement || false;
-    const passwordInput = document.getElementById('Password') as HTMLInputElement || false;
-    const confirmPasswordInput = document.getElementById('confirmPassword') as HTMLInputElement || false;
-    const accountNumberInput = document.getElementById('accno') as HTMLInputElement || false;
-    const hearAboutUsInput = document.getElementById('HearAboutUs') as HTMLInputElement || false;
-    const dobDayInput = document.getElementById('dob_day') as HTMLInputElement || false;
-    const dobMonthInput = document.getElementById('dob_month') as HTMLInputElement || false;
-    const dobYearInput = document.getElementById('dob_year') as HTMLInputElement || false;
+function runAllValidations() {
+    const firstNameInput = getEl<HTMLInputElement>('FirstName');
+    const lastNameInput = getEl<HTMLInputElement>('LastName');
+    const titleInput = getEl<HTMLInputElement>('Title');
+    const otherTitleInput = getEl<HTMLInputElement>('otherTitle');
+    const daytimeTelephoneInput = getEl<HTMLInputElement>('DayTimeTelephone');
+    const emailInput = getEl<HTMLInputElement>('Email');
+    const confirmEmailInput = getEl<HTMLInputElement>('ConfirmEmail');
+    const passwordInput = getEl<HTMLInputElement>('Password');
+    const confirmPasswordInput = getEl<HTMLInputElement>('confirmPassword');
+    const accountNumberInput = getEl<HTMLInputElement>('accno');
+    const hearAboutUsInput = getEl<HTMLInputElement>('HearAboutUs');
+    const dobDayInput = getEl<HTMLInputElement>('dob_day');
+    const dobMonthInput = getEl<HTMLInputElement>('dob_month');
+    const dobYearInput = getEl<HTMLInputElement>('dob_year');
 
-    let firstNameValid = validateName(firstNameInput.value, firstNameInput.id)
-    let lastNameValid = validateName(lastNameInput.value, lastNameInput.id);
-    let titleValid = validateTitle(titleInput.value, titleInput.id);
-    let otherTitleValid = validateTitle(otherTitleInput.value, otherTitleInput.id);
-    let phoneValid = validatePhone(daytimeTelephoneInput.value, daytimeTelephoneInput.id);
-    let emailValid = validateEmail(emailInput.value, emailInput.id);
-    let confirmEmailValid = validateConfirmEmail(emailInput.value, confirmEmailInput.value, confirmEmailInput.id);
-    let passwordValid = validatePassword(passwordInput, passwordInput.id);
-    let confirmPasswordValid = validateConfirmPassword(passwordInput.value, confirmPasswordInput.value, confirmPasswordInput.id);
-    let dateValid = validateDate(dobDayInput.value, dobMonthInput.value, dobYearInput.value);
-    let accountNumberValid = validateAccountNumber(accountNumberInput.value, accountNumberInput.id);
-    let hearAboutUsValid = validateHearAboutUs(hearAboutUsInput.value, hearAboutUsInput.id);
-    let addressValid = validateAddress();
+    // If any critical inputs are missing, treat as invalid so we do not submit by accident.
+    if (
+        !firstNameInput || !lastNameInput || !titleInput || !otherTitleInput ||
+        !daytimeTelephoneInput || !emailInput || !confirmEmailInput ||
+        !passwordInput || !confirmPasswordInput || !accountNumberInput ||
+        !hearAboutUsInput || !dobDayInput || !dobMonthInput || !dobYearInput
+    ) {
+        return false;
+    }
 
-    custDetailsForm.addEventListener('submit', (e: SubmitEvent) => {
-        e.preventDefault();
+    const firstNameValid = validateName(firstNameInput.value, firstNameInput.id);
+    const lastNameValid = validateName(lastNameInput.value, lastNameInput.id);
 
-        return formSubmit(
-            firstNameValid,
-            lastNameValid,
-            titleValid,
-            otherTitleValid,
-            phoneValid,
-            emailValid,
-            confirmEmailValid,
-            passwordValid,
-            confirmPasswordValid,
-            dateValid,
-            accountNumberValid,
-            hearAboutUsValid,
-            addressValid
-        );
+    const titleValid = validateTitle(titleInput.value, titleInput.id);
+    const otherTitleValid = validateTitle(otherTitleInput.value, otherTitleInput.id);
+
+    const phoneValid = validatePhone(daytimeTelephoneInput.value, daytimeTelephoneInput.id);
+
+    const emailValid = validateEmail(emailInput.value, emailInput.id);
+    const confirmEmailValid = validateConfirmEmail(
+        emailInput.value,
+        confirmEmailInput.value,
+        confirmEmailInput.id
+    );
+
+    // validatePassword expects the input element for strength side effects
+    const passwordValid = validatePassword(passwordInput, passwordInput.id);
+    const confirmPasswordValid = validateConfirmPassword(
+        passwordInput.value,
+        confirmPasswordInput.value,
+        confirmPasswordInput.id
+    );
+
+    const dateValid = validateDate(
+        dobDayInput.value,
+        dobMonthInput.value,
+        dobYearInput.value
+    );
+
+    const accountNumberValid = validateAccountNumber(accountNumberInput.value, accountNumberInput.id);
+    const hearAboutUsValid = validateHearAboutUs(hearAboutUsInput.value, hearAboutUsInput.id);
+
+    const addressValid = validateAddress();
+
+    const allValid =
+        firstNameValid &&
+        lastNameValid &&
+        titleValid &&
+        otherTitleValid &&
+        phoneValid &&
+        emailValid &&
+        confirmEmailValid &&
+        passwordValid &&
+        confirmPasswordValid &&
+        dateValid &&
+        accountNumberValid &&
+        hearAboutUsValid &&
+        addressValid;
+
+    if (!allValid) scrollToTop();
+
+    return allValid;
+}
+
+export function initPersonalDetailsPage(): void {
+    const form = getEl<HTMLFormElement>('custDetails');
+
+    // Wire blur handlers, passing values not elements for the value-based validators
+    getEl<HTMLInputElement>('FirstName')?.addEventListener('blur', e => {
+        const el = e.currentTarget as HTMLInputElement;
+        validateName(el.value, el.id);
     });
 
-    firstNameInput.addEventListener('blur', (e: FocusEvent) => {
-        validateName(firstNameInput, firstNameInput.id);
+    getEl<HTMLInputElement>('LastName')?.addEventListener('blur', e => {
+        const el = e.currentTarget as HTMLInputElement;
+        validateName(el.value, el.id);
     });
 
-    lastNameInput.addEventListener('blur', (e: FocusEvent) => {
-        validateName(lastNameInput, lastNameInput.id);
+    getEl<HTMLInputElement>('Title')?.addEventListener('blur', e => {
+        const el = e.currentTarget as HTMLInputElement;
+        validateTitle(el.value, el.id);
     });
 
-    titleInput.addEventListener('blur', (e: FocusEvent) => {
-        validateTitle(titleInput, titleInput.id);
+    getEl<HTMLInputElement>('otherTitle')?.addEventListener('blur', e => {
+        const el = e.currentTarget as HTMLInputElement;
+        validateTitle(el.value, el.id);
     });
 
-    otherTitleInput.addEventListener('blur', (e: FocusEvent) => {
-        validateTitle(otherTitleInput, otherTitleInput.id);
+    getEl<HTMLInputElement>('DayTimeTelephone')?.addEventListener('blur', e => {
+        const el = e.currentTarget as HTMLInputElement;
+        validatePhone(el.value, el.id);
     });
 
-    daytimeTelephoneInput.addEventListener('blur', (e: FocusEvent) => {
-        validatePhone(daytimeTelephoneInput, daytimeTelephoneInput.id);
+    getEl<HTMLInputElement>('Email')?.addEventListener('blur', e => {
+        const el = e.currentTarget as HTMLInputElement;
+        validateEmail(el.value, el.id);
     });
 
-    emailInput.addEventListener('blur', (e: FocusEvent) => {
-        validateEmail(emailInput, emailInput.id);
+    const confirmEmail = getEl<HTMLInputElement>('ConfirmEmail');
+    const email = getEl<HTMLInputElement>('Email');
+    confirmEmail?.addEventListener('blur', () => {
+        validateConfirmEmail(email?.value ?? '', confirmEmail.value, confirmEmail.id);
     });
 
-    confirmEmailInput.addEventListener('blur', (e: FocusEvent) => {
-        validateConfirmEmail(emailInput, confirmEmailInput, confirmEmailInput.id);
+    const password = getEl<HTMLInputElement>('Password');
+    password?.addEventListener('blur', () => {
+        validatePassword(password, password.id);
     });
 
-    passwordInput.addEventListener('blur', (e: FocusEvent) => {
-        validatePassword(passwordInput, passwordInput.id);
+    const confirmPassword = getEl<HTMLInputElement>('confirmPassword');
+    confirmPassword?.addEventListener('blur', () => {
+        validateConfirmPassword(password?.value ?? '', confirmPassword.value, confirmPassword.id);
     });
 
-    confirmPasswordInput.addEventListener('blur', (e: FocusEvent) => {
-        validateConfirmPassword(passwordInput, confirmPasswordInput, confirmPasswordInput.id);
+    getEl<HTMLInputElement>('accno')?.addEventListener('blur', e => {
+        const el = e.currentTarget as HTMLInputElement;
+        validateAccountNumber(el.value, el.id);
     });
 
-    accountNumberInput.addEventListener('blur', (e: FocusEvent) => {
-        validateAccountNumber(accountNumberInput, accountNumberInput.id);
+    // Submit handler
+    form?.addEventListener('submit', e => {
+        const ok = runAllValidations();
+        if (!ok) {
+            e.preventDefault();
+        }
     });
-});
+}
+
+// Auto init for live page
+if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => initPersonalDetailsPage());
+} else {
+    initPersonalDetailsPage();
+}

@@ -1,86 +1,88 @@
 import { loginFormSubmit } from "../utilities/account/loginFormSubmit.js";
 import { PasswordStrength } from "../global/PasswordStrength.js";
 
+// If other parts of the page poke this later, keep the instance.
+// Otherwise you can remove it.
 const passwordStrength = new PasswordStrength();
 
-const nonCookieLoginFormElem = document.getElementById('nonCookieLoginForm') as HTMLFormElement || false;
-const nonCookieLoginUsernameInput = document.getElementById('nonCookieLoginAccountNo') as HTMLInputElement || false;
-const cookieLoginFormElem = document.getElementById('cookieLoginForm') as HTMLFormElement || false;
-const actionInputElem = document.getElementById('action') as HTMLInputElement || false;
-const cookieLoginPasswordInput = document.getElementById('cookieLoginLDAPPassword') as HTMLInputElement || false;
-const passwordInput = document.getElementById('password') as HTMLInputElement || false;
-const newCustomerInput = document.getElementById('newCustomerRadio') as HTMLInputElement || false;
-const loginAccountNumberValidationElem = document.getElementById('loginAccountNumberValidation') as HTMLElement || false;
-const registerLinkElem = document.getElementById('checkout-register-account-link') as HTMLElement || false;
+function getEl<T extends HTMLElement>(id: string): T | null {
+    return document.getElementById(id) as T | null;
+}
 
-window.addEventListener('DOMContentLoaded', () => {
-    console.info('Login JS loaded');
+export function initLoginPage(): void {
+    const nonCookieLoginForm = getEl<HTMLFormElement>("nonCookieLoginForm");
+    const nonCookieLoginUsernameInput = getEl<HTMLInputElement>("nonCookieLoginAccountNo");
 
+    const cookieLoginForm = getEl<HTMLFormElement>("cookieLoginForm");
+    const cookieLoginPasswordInput = getEl<HTMLInputElement>("cookieLoginLDAPPassword");
+
+    const actionInput = getEl<HTMLInputElement>("action");
+    const passwordInput = getEl<HTMLInputElement>("password");
+    const newCustomerInput = getEl<HTMLInputElement>("newCustomerRadio");
+    const loginAccountNumberValidation = getEl<HTMLElement>("loginAccountNumberValidation");
+    const registerLink = getEl<HTMLElement>("checkout-register-account-link");
+
+    // Focus helpers
     if (cookieLoginPasswordInput && cookieLoginPasswordInput.value.length > 0) {
-        console.log('Cookie username input has value. Focusing');
         cookieLoginPasswordInput.focus();
-    }
-
-    if (nonCookieLoginUsernameInput && nonCookieLoginUsernameInput.value.length > 0) {
-        console.log('Non cookie username input has value. Focusing');
+    } else if (nonCookieLoginUsernameInput && nonCookieLoginUsernameInput.value.length > 0) {
         nonCookieLoginUsernameInput.focus();
     }
 
-    if (newCustomerInput && newCustomerInput.checked) {
-        console.log('New customer input exists, is checked. Hiding password input.');
-        passwordInput.setAttribute('hidden', 'hidden');
+    // Hide password if "new customer" is checked at load
+    if (newCustomerInput?.checked && passwordInput) {
+        passwordInput.setAttribute("hidden", "hidden");
     }
 
-    if (newCustomerInput) {
-        newCustomerInput.addEventListener('click', (e: MouseEvent) => {
-            console.log('New customer radio button checked');
-            loginAccountNumberValidationElem.setAttribute('hidden', 'hidden');
+    // Clicking new customer hides the account number validation hint
+    if (newCustomerInput && loginAccountNumberValidation) {
+        newCustomerInput.addEventListener("click", () => {
+            loginAccountNumberValidation.setAttribute("hidden", "hidden");
         });
     }
 
-    if (cookieLoginFormElem) {
-        cookieLoginFormElem.addEventListener('submit', (e: SubmitEvent) => {
-            console.log('Cookie form submission');
-            return loginFormSubmit(true);
+    // Cookie form submit
+    if (cookieLoginForm) {
+        cookieLoginForm.addEventListener("submit", (e: SubmitEvent) => {
+            // Let the util decide validity
+            const ok = loginFormSubmit(true);
+            if (!ok) {
+                e.preventDefault();
+                return;
+            }
+            // If ok, allow the native submit to proceed
         });
     }
 
-    if (cookieLoginFormElem) {
-        nonCookieLoginFormElem.addEventListener('submit', (e: SubmitEvent) => {
-            console.log('Non cookie form submission');
-            return loginFormSubmit();
-        });
-    }
-
-    if (registerLinkElem) {
-        registerLinkElem.addEventListener('click', (e: MouseEvent) => {
-            console.log('Register link clicked');
-
-            const formId = (cookieLoginFormElem) ? cookieLoginFormElem.getAttribute('id') : nonCookieLoginFormElem.getAttribute('id');
-
-            if (!formId) return;
-
-            e.preventDefault();
-            actionInputElem.value = 'no';
-
-            if (cookieLoginFormElem) {
-                cookieLoginFormElem.submit();
-            } else {
-                nonCookieLoginFormElem.submit();
+    // Non-cookie form submit
+    if (nonCookieLoginForm) {
+        nonCookieLoginForm.addEventListener("submit", (e: SubmitEvent) => {
+            const ok = loginFormSubmit(false);
+            if (!ok) {
+                e.preventDefault();
+                return;
             }
         });
     }
-});
 
-/*
-$("#registerSubmit").click(function()
-{
-    $("label.error").hide();
-});
+    // Register link submits the appropriate form with action=no
+    if (registerLink && actionInput) {
+        registerLink.addEventListener("click", (e: MouseEvent) => {
+            e.preventDefault();
+            actionInput.value = "no";
 
-// Determine global error display
-if ($.trim($("label.global").text()).length > 0)
-{
-    $("label.global").show();
-    $("label.tip").hide();
-}*/
+            if (cookieLoginForm) {
+                cookieLoginForm.submit();
+            } else if (nonCookieLoginForm) {
+                nonCookieLoginForm.submit();
+            }
+        });
+    }
+}
+
+// Auto-init on DOM ready when included directly on the page
+if (document.readyState === "loading") {
+    window.addEventListener("DOMContentLoaded", () => initLoginPage());
+} else {
+    initLoginPage();
+}
