@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config';
+import path from 'node:path';
 
 export default defineConfig({
     test: {
@@ -21,6 +22,13 @@ export default defineConfig({
                 branches: 75,
                 statements: 80
             }
+        }
+    },
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'src/ts'),
+            '~checkout': path.resolve(__dirname, 'src/ts/checkout'),
+            '~utils': path.resolve(__dirname, 'src/ts/utilities')
         }
     }
 });

@@ -11,7 +11,9 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ts/*": ["src/ts/*"]
+      "@/*": ["src/ts/*"],
+      "~utils/*": ["src/ts/utilities/*"],
+      "~checkout/*": ["src/ts/checkout/*"]
     }
   },
   "include": ["src/ts/**/*"]
