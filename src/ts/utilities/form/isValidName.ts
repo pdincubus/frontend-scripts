@@ -1,3 +1,4 @@
-export function isValidName (value: string): boolean {
-    return /^[a-z]+[a-z0-9 .'-]+$/i.test(value)
+export function isValidName(value: string): boolean {
+  if (typeof value !== 'string') return false;
+  return /^[\p{L} .'-]+$/u.test(value.trim());
 }

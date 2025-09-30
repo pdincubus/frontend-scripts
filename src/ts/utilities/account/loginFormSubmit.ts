@@ -3,66 +3,44 @@ import { isLDAPPassword } from './isLDAPPassword.js';
 import { isPostcode } from '../form/isPostcode.js';
 import { sendAnalyticsPasswordDetails } from '../analytics/sendAnalyticsPasswordDetails.js';
 
-export function loginFormSubmit (isCookieForm: boolean = false): boolean {
-    let errorCount = 0;
-    let loginAccountNo;
-    let loginLDAPPassword;
-    let loginPostcode;
+export function loginFormSubmit(isCookieForm = false): boolean {
+    const action = (document.getElementById('action') as HTMLInputElement | null)?.value ?? '';
 
-    const actionInputElem = document.getElementById('action') as HTMLInputElement || false;
+    // Register path bypasses validation
+    if (action === 'no') return true;
 
-    if (isCookieForm) {
-        loginAccountNo = 'cookieLoginAccountNo';
-        loginLDAPPassword = 'cookieLoginLDAPPassword';
-        loginPostcode = 'cookieLoginPostcode';
-    } else {
-        loginAccountNo = 'nonCookieLoginAccountNo';
-        loginLDAPPassword = 'nonCookieLoginLDAPPassword';
-        loginPostcode = 'nonCookieLoginPostcode';
-    }
+    const ids = isCookieForm
+        ? { acc: 'cookieLoginAccountNo', pwd: 'cookieLoginLDAPPassword', pc: 'cookieLoginPostcode' }
+        : { acc: 'nonCookieLoginAccountNo', pwd: 'nonCookieLoginLDAPPassword', pc: 'nonCookieLoginPostcode' };
 
-    const loginAccountNoElem = document.getElementById(loginAccountNo) as HTMLInputElement || false;
-    const loginLDAPPasswordElem = document.getElementById(loginLDAPPassword) as HTMLInputElement || false;
-    const loginPostcodeElem = document.getElementById(loginPostcode) as HTMLInputElement || false;
+    const accEl = document.getElementById(ids.acc) as HTMLInputElement | null;
+    const pwdEl = document.getElementById(ids.pwd) as HTMLInputElement | null;
+    const pcEl  = document.getElementById(ids.pc)  as HTMLInputElement | null;
 
-    const passwordStrengthElem = document.getElementById('passwordStrength') as HTMLInputElement || false;
-    const passwordLengthElem = document.getElementById('passwordLength') as HTMLInputElement || false;
-    const newCustomer = document.getElementById('newCustomerRadio') as HTMLInputElement || false;
+    // If any field is missing, fail fast
+    if (!accEl || !pwdEl || !pcEl) return false;
 
-    const validAgentNumberOrEmail = isAgentNumberOrEmail(loginAccountNo, loginAccountNoElem.value, newCustomer.checked);
-    const validLdapPassword = isLDAPPassword(loginLDAPPassword, loginLDAPPasswordElem.value);
-    const validPostcode = isPostcode(loginPostcode, loginPostcodeElem.value);
+    const newCustomer = (document.getElementById('newCustomerRadio') as HTMLInputElement | null)?.checked ?? false;
 
-    // Determine whether register was selected.
-    if (actionInputElem.value === "no"){
-        return true;
-    }
+    // Validate account first; if bad, do not waste time on the rest
+    if (!isAgentNumberOrEmail(ids.acc, accEl.value, newCustomer)) return false;
 
-    if (!validAgentNumberOrEmail) {
-        errorCount += 1;
-    }
+    const okPwd = isLDAPPassword(ids.pwd, pwdEl.value);
+    const okPc  = isPostcode(ids.pc, pcEl.value);
 
-    if (errorCount == 0) {
-        if (!validLdapPassword) {
-            errorCount += 1;
+    if (!okPwd || !okPc) return false;
+
+    // Analytics is optional, only if both inputs exist and the length parses
+    const strengthEl = document.getElementById('passwordStrength') as HTMLInputElement | null;
+    const lengthEl   = document.getElementById('passwordLength') as HTMLInputElement | null;
+
+    if (strengthEl && lengthEl) {
+        const len = parseInt(lengthEl.value, 10);
+
+        if (Number.isFinite(len)) {
+            sendAnalyticsPasswordDetails(len, strengthEl.value);
         }
-
-        if (!validPostcode) {
-            errorCount += 1;
-        }
-
-        if (passwordStrengthElem) {
-            sendAnalyticsPasswordDetails(parseInt(passwordLengthElem.value, 10), passwordStrengthElem.value);
-        }
-
-       /* if (typeof triggerRecaptcha !== "undefined") {
-            triggerRecaptcha();
-
-            return false;
-        } else {*/
-            return true;
-        //}
-    } else {
-        return false;
     }
+
+    return true;
 }

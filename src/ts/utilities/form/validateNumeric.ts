@@ -1,5 +1,16 @@
-export function validateNumeric(testString: string): boolean {
-    const regexp = new RegExp(/^\s*\d+\s*$/);
+/**
+ * Validate that a string represents a whole number.
+ *
+ * Accepts optional leading/trailing whitespace. By default only allows
+ * non-negative integers (0, 1, 2…).
+ */
+export function validateNumeric(value: string): boolean {
+    if (typeof value !== 'string') return false;
 
-    return (regexp.test(testString));
+    // ^\s*     optional leading whitespace
+    // \d+      one or more digits
+    // \s*$     optional trailing whitespace
+    const pattern = /^\s*\d+\s*$/;
+
+    return pattern.test(value);
 }

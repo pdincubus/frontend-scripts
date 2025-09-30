@@ -1,39 +1,19 @@
-import { determineErrorDisplay } from "../form/determineErrorDisplay.js";
+import { determineErrorDisplay } from '../form/determineErrorDisplay.js';
 
-export function isLDAPPassword (formId: string, value: string): boolean {
-    const checkOK = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!#$%^&()_-+={}[]\|:;'<>,.?/";
-    const passwordStrengthInput = document.getElementById('passwordStrength') as HTMLInputElement || false;
-    const passwordLengthInput = document.getElementById('passwordLength') as HTMLInputElement || false;
+const CHECK_OK = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!#$%^&()_-+={}[]\\|:;'<>,.?/";
 
-    let allValid = true;
+export function isLDAPPassword(formId: string, value: string): boolean {
+    const passwordStrengthInput = document.getElementById('passwordStrength') as HTMLInputElement | null;
+    const passwordLengthInput = document.getElementById('passwordLength') as HTMLInputElement | null;
+    const v = value; // keep behaviour, no trimming unless you want it
 
-    if (value.length < 1) {
-        allValid = false;
-    }
-
-    for (let i = 0; i < value.length; i++) {
-        const ch = value.charAt(i);
-
-        for (let j = 0; j < checkOK.length; j++) {
-            if (ch == checkOK.charAt(j)) {
-                break;
-            }
-
-            if (j == checkOK.length) {
-                allValid = false;
-
-                break;
-            }
-        }
-    }
+    let allValid = v.length >= 1 && [...v].every(ch => CHECK_OK.includes(ch));
 
     determineErrorDisplay(allValid, formId);
 
-    if (allValid && passwordStrengthInput) {
-        //const msg = objPwdVal.chkPass(value);
-
-        passwordLengthInput.value = value.length.toString();
-        passwordStrengthInput.value = 'hello';//objPwdVal.strength;
+    if (allValid && passwordStrengthInput && passwordLengthInput) {
+        passwordLengthInput.value = String(v.length);
+        passwordStrengthInput.value = 'hello'; // keeping your current behaviour
     }
 
     return allValid;

@@ -115,12 +115,16 @@ export default class MobileNav {
 
         console.log('Destroying nav. Tabbables:', this.navTabbableItems);
 
+        // reset container
+        this.container.classList.remove(this.activeClass);
         this.container.removeAttribute('aria-live');
         this.container.removeAttribute('style');
 
+        // reset toggle
         this.toggle.classList.remove(this.activeClass);
         this.toggle.setAttribute('aria-expanded', 'false');
 
+        // clear managed focus
         makeTabbable(this.navTabbableItems, 'remove');
 
         this.isReady = false;

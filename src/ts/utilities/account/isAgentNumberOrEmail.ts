@@ -1,20 +1,28 @@
-import { determineErrorDisplay } from "../form/determineErrorDisplay.js";
+import { determineErrorDisplay } from '../form/determineErrorDisplay.js';
+import { PATTERN_AGENT, PATTERN_EMAIL } from './patterns';
 
-export function isAgentNumberOrEmail (formId: string, value: string, isNewCustomer: boolean = false): boolean {
-    // Ignore validation if the customer is new.
-    if (isNewCustomer) {
-        return true;
-    }
+export type ErrorDisplay = (ok: boolean, formId: string) => void;
 
-    const allValid = (
-        /^[A-Za-z](\d{7}|\d{9})$/.test(value)
-        || /^[A-Za-z]{2}\d{6}$/.test(value)
-        || /^\d{2}[A-Za-z]\d{5}$/.test(value)
-        || /^[0-9]{4,8}$/.test(value)
-        || /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i.test(value)
-    );
+export function isAgentNumberOrEmailP(
+    value: string,
+    isNewCustomer = false
+): boolean {
+    if (isNewCustomer) return true;
 
-    determineErrorDisplay(allValid, formId);
+    const v = value.trim();
 
-    return allValid;
+    return PATTERN_AGENT.some(rx => rx.test(v)) || PATTERN_EMAIL.test(v);
+}
+
+export function isAgentNumberOrEmail(
+    formId: string,
+    value: string,
+    isNewCustomer = false,
+    display: ErrorDisplay = determineErrorDisplay
+): boolean {
+    const ok = isAgentNumberOrEmailP(value, isNewCustomer);
+
+    if (!isNewCustomer) display(ok, formId);
+
+    return ok;
 }

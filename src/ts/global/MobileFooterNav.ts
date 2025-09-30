@@ -139,17 +139,19 @@ export default class MobileFooterNav {
     public destroy(): void {
         if (!this.isReady || !this.container ) return;
 
-        //console.log('MobileFooterNav: destroy.');
-
+        // reset toggles
         this.toggles.forEach((toggle: HTMLElement) => {
             toggle.classList.remove(this.activeClass);
+            toggle.setAttribute('aria-expanded', 'false');
         });
 
+        // reset sections
         this.sections.forEach((section: HTMLElement) => {
             const sectionTabbableItems = Array.from(
                 section.querySelectorAll<HTMLElement>('a, button, [role="menuitem"], [tabindex]')
             );
 
+            section.classList.remove(this.activeClass);
             section.removeAttribute('style');
             makeTabbable(sectionTabbableItems, 'remove');
         });

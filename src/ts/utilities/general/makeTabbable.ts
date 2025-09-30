@@ -10,11 +10,14 @@ export function makeTabbable(
     elements: Iterable<HTMLElement>,
     mode: 'enable' | 'disable' | 'remove'
 ): void {
-    console.log('makeTabbable:', elements, mode);
-
     for (const elem of elements) {
         switch (mode) {
             case 'enable': {
+                // Only restore if we previously saved something
+                if (!elem.hasAttribute('data-prev-tabindex')) {
+                    break;
+                }
+
                 const prev = elem.getAttribute('data-prev-tabindex');
 
                 if (prev === null || prev === '') {
@@ -24,7 +27,6 @@ export function makeTabbable(
                 }
 
                 elem.removeAttribute('data-prev-tabindex');
-
                 break;
             }
 
@@ -33,16 +35,13 @@ export function makeTabbable(
                     const current = elem.getAttribute('tabindex');
                     elem.setAttribute('data-prev-tabindex', current ?? '');
                 }
-
                 elem.setAttribute('tabindex', '-1');
-
                 break;
             }
 
             case 'remove': {
                 elem.removeAttribute('tabindex');
                 elem.removeAttribute('data-prev-tabindex');
-
                 break;
             }
         }

@@ -1,33 +1,79 @@
-import { validateAddressLine } from "./validateAddressLine.js";
-import { validatePostcode } from "./validatePostcode.js";
+import { validateAddressLineValue, type AddressLineOptions } from './validateAddressLine.js';
+import { validatePostcodeValue, type PostcodeOptions } from './validatePostcode.js';
 
-export function validateAddress(): boolean {
-    let allValid = true;
+export type AddressFields = {
+    address_1: string;
+    address_2?: string;
+    address_3?: string;
+    address_4?: string;
+    city: string;
+    county?: string;
+    postCode: string;
+};
 
-    const newCreditDetailsEntryClassname = 'newCreditDetailsInputFieldsEntry';
+export type AddressOptions = {
+    visible?: boolean;                  // default true; if false, skip validation and return ok=true
+    lineOpts?: AddressLineOptions;      // per-line options
+    optionalLines?: Array<keyof AddressFields>; // which lines are optional
+    postcodeOpts?: PostcodeOptions;
+};
 
-    const manualAddressContainerElem = document.getElementById('addressInputAllSection') as HTMLElement || false;
-    const addressLine1 = document.getElementById('#address_1') as HTMLInputElement || false;
-    const addressLine2 = document.getElementById('#address_2') as HTMLInputElement || false;
-    const addressLine3 = document.getElementById('#address_3') as HTMLInputElement || false;
-    const addressLine4 = document.getElementById('#address_4') as HTMLInputElement || false;
-    const addressCity = document.getElementById('#city') as HTMLInputElement || false;
-    const addressCounty = document.getElementById('#county') as HTMLInputElement || false;
-    const addressPostcode = document.getElementById('#postCode') as HTMLInputElement || false;
+/** Pure aggregator. No DOM. */
+export function validateAddress(
+    fields: AddressFields,
+    opts: AddressOptions = {}
+): { ok: boolean; parts: Record<keyof AddressFields, boolean> } {
+    const {
+        visible = true,
+        lineOpts = {},
+        optionalLines = ['address_2', 'address_3', 'address_4', 'county'],
+        postcodeOpts = {}
+    } = opts;
 
-    if (manualAddressContainerElem.checkVisibility()) {
-        if (
-            !validateAddressLine(addressLine1, newCreditDetailsEntryClassname)
-            || !validateAddressLine(addressLine2, newCreditDetailsEntryClassname)
-            || !validateAddressLine(addressLine3, newCreditDetailsEntryClassname)
-            || !validateAddressLine(addressLine4, newCreditDetailsEntryClassname)
-            || !validateAddressLine(addressCity, newCreditDetailsEntryClassname)
-            || !validateAddressLine(addressCounty, newCreditDetailsEntryClassname)
-            || !validatePostcode(addressPostcode, newCreditDetailsEntryClassname)
-        ) {
-            allValid = false;
-        }
+    // if not visible, treat as valid
+    if (!visible) {
+        const parts: Record<keyof AddressFields, boolean> = {
+            address_1: true,
+            address_2: true,
+            address_3: true,
+            address_4: true,
+            city: true,
+            county: true,
+            postCode: true
+        };
+        return { ok: true, parts };
     }
 
-    return allValid;
+    const isOptional = new Set(optionalLines);
+
+    const parts: Record<keyof AddressFields, boolean> = {
+        address_1: validateAddressLineValue(fields.address_1 ?? '', {
+            ...lineOpts,
+            required: !isOptional.has('address_1')
+        }).ok,
+        address_2: validateAddressLineValue(fields.address_2 ?? '', {
+            ...lineOpts,
+            required: !isOptional.has('address_2')
+        }).ok,
+        address_3: validateAddressLineValue(fields.address_3 ?? '', {
+            ...lineOpts,
+            required: !isOptional.has('address_3')
+        }).ok,
+        address_4: validateAddressLineValue(fields.address_4 ?? '', {
+            ...lineOpts,
+            required: !isOptional.has('address_4')
+        }).ok,
+        city: validateAddressLineValue(fields.city ?? '', {
+            ...lineOpts,
+            required: !isOptional.has('city')
+        }).ok,
+        county: validateAddressLineValue(fields.county ?? '', {
+            ...lineOpts,
+            required: !isOptional.has('county')
+        }).ok,
+        postCode: validatePostcodeValue(fields.postCode ?? '', postcodeOpts).ok
+    };
+
+    const ok = Object.values(parts).every(Boolean);
+    return { ok, parts };
 }

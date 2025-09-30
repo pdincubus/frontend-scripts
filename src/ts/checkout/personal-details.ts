@@ -1,12 +1,10 @@
-import { validateFirstName } from '../utilities/form/validateFirstName.js';
-import { validateLastName } from '../utilities/form/validateLastName.js';
+import { validateName } from '../utilities/form/validateName.js';
 import { validateEmail } from '../utilities/form/validateEmail.js';
 import { validateConfirmEmail } from '../utilities/form/validateConfirmEmail.js';
 import { validateAccountNumber } from '../utilities/form/validateAccountNumber.js';
 import { validatePassword } from '../utilities/form/validatePassword.js';
 import { validateConfirmPassword } from '../utilities/form/validateConfirmPassword.js';
 import { validateTitle } from '../utilities/form/validateTitle.js';
-import { validateOtherTitle } from '../utilities/form/validateOtherTitle.js';
 import { validatePhone } from '../utilities/form/validatePhone.js';
 import { validateHearAboutUs } from '../utilities/form/validateHearAboutUs.js';
 import { validateDate } from '../utilities/form/validateDate.js';
@@ -74,18 +72,18 @@ window.addEventListener('DOMContentLoaded', () => {
     const dobMonthInput = document.getElementById('dob_month') as HTMLInputElement || false;
     const dobYearInput = document.getElementById('dob_year') as HTMLInputElement || false;
 
-    let firstNameValid = validateFirstName(firstNameInput, firstNameInput.id)
-    let lastNameValid = validateLastName(lastNameInput, lastNameInput.id);
-    let titleValid = validateTitle(titleInput, titleInput.id);
-    let otherTitleValid = validateOtherTitle(otherTitleInput, otherTitleInput.id);
-    let phoneValid = validatePhone(daytimeTelephoneInput, daytimeTelephoneInput.id);
-    let emailValid = validateEmail(emailInput, emailInput.id);
-    let confirmEmailValid = validateConfirmEmail(emailInput, confirmEmailInput, confirmEmailInput.id);
+    let firstNameValid = validateName(firstNameInput.value, firstNameInput.id)
+    let lastNameValid = validateName(lastNameInput.value, lastNameInput.id);
+    let titleValid = validateTitle(titleInput.value, titleInput.id);
+    let otherTitleValid = validateTitle(otherTitleInput.value, otherTitleInput.id);
+    let phoneValid = validatePhone(daytimeTelephoneInput.value, daytimeTelephoneInput.id);
+    let emailValid = validateEmail(emailInput.value, emailInput.id);
+    let confirmEmailValid = validateConfirmEmail(emailInput.value, confirmEmailInput.value, confirmEmailInput.id);
     let passwordValid = validatePassword(passwordInput, passwordInput.id);
-    let confirmPasswordValid = validateConfirmPassword(passwordInput, confirmPasswordInput, confirmPasswordInput.id);
-    let dateValid = validateDate(dobDayInput, dobMonthInput, dobYearInput);
-    let accountNumberValid = validateAccountNumber(accountNumberInput, accountNumberInput.id);
-    let hearAboutUsValid = validateHearAboutUs(hearAboutUsInput, hearAboutUsInput.id);
+    let confirmPasswordValid = validateConfirmPassword(passwordInput.value, confirmPasswordInput.value, confirmPasswordInput.id);
+    let dateValid = validateDate(dobDayInput.value, dobMonthInput.value, dobYearInput.value);
+    let accountNumberValid = validateAccountNumber(accountNumberInput.value, accountNumberInput.id);
+    let hearAboutUsValid = validateHearAboutUs(hearAboutUsInput.value, hearAboutUsInput.id);
     let addressValid = validateAddress();
 
     custDetailsForm.addEventListener('submit', (e: SubmitEvent) => {
@@ -109,11 +107,11 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     firstNameInput.addEventListener('blur', (e: FocusEvent) => {
-        validateFirstName(firstNameInput, firstNameInput.id);
+        validateName(firstNameInput, firstNameInput.id);
     });
 
     lastNameInput.addEventListener('blur', (e: FocusEvent) => {
-        validateLastName(lastNameInput, lastNameInput.id);
+        validateName(lastNameInput, lastNameInput.id);
     });
 
     titleInput.addEventListener('blur', (e: FocusEvent) => {
@@ -121,7 +119,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     otherTitleInput.addEventListener('blur', (e: FocusEvent) => {
-        validateOtherTitle(otherTitleInput, otherTitleInput.id);
+        validateTitle(otherTitleInput, otherTitleInput.id);
     });
 
     daytimeTelephoneInput.addEventListener('blur', (e: FocusEvent) => {

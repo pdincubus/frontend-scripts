@@ -1,29 +1,11 @@
-export function isValidSafePlace(checkString: string, safePlaceElem: HTMLInputElement): boolean {
-	const checkOK = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -'";
+export function isValidSafePlace(
+  checkString: string,
+  safePlaceElem: HTMLInputElement
+): boolean {
+  if (safePlaceElem.value !== 'Z:Other') return true;
+  if (checkString.length === 0) return false;
 
-	let allValid = true;
-
-	if (safePlaceElem.value === "Z:Other" && checkString.length === 0) {
-		return false;
-	}
-
-	if (safePlaceElem.value === "Z:Other" && checkString.length !== 0) {
-		for (let i = 0; i < checkString.length; i++) {
-			let ch = checkString.charAt(i);
-
-			for (let j = 0; j < checkOK.length; j++) {
-				if (ch == checkOK.charAt(j)) {
-				    break;
-                }
-
-                if (j === checkOK.length) {
-                    allValid = false;
-
-                    break;
-                }
-            }
-		}
-	}
-
-	return allValid;
+  // allow: letters, numbers, space, hyphen, apostrophe
+  const allowedPattern = /^[0-9A-Za-z \-']+$/; // note the literal space, not \s
+  return allowedPattern.test(checkString);
 }

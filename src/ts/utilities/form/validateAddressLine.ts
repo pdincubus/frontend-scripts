@@ -1,20 +1,62 @@
-import { isValidAddressLine } from "./isValidAddressLine.js";
-import { determineErrorDisplay } from "./determineErrorDisplay.js";
+import { determineErrorDisplay } from './determineErrorDisplay.js';
+import {
+    isValidAddressLine,
+    normaliseAddressLine,
+    type AddressLineCheckOptions,
+    type AddressLineCheckResult
+} from './isValidAddressLine.js';
 
-export function validateAddressLine(addressLine: HTMLInputElement, newCreditDetailsEntryClassname: string): boolean {
-    let allValid = true;
+export { normaliseAddressLine } from './isValidAddressLine.js';
 
-    if (addressLine.value === "") {
-        allValid = false;
-    }else{
-        allValid = isValidAddressLine(addressLine.value);
+/** Pure value validator kept for tests. */
+export function validateAddressLineValue(
+    value: string,
+    opts: AddressLineCheckOptions = {}
+): AddressLineCheckResult {
+    const { required = true } = opts;
+
+    // normalise first, then decide emptiness
+    const v = normaliseAddressLine(value, true, true);
+
+    // empty handling must not hit the delegate
+    if (v.length === 0) {
+        return required
+            ? { ok: false, normalised: v, message: 'Enter at least 1 characters.' }
+            : { ok: true, normalised: v };
     }
 
-    if (addressLine.parentElement?.classList.contains(newCreditDetailsEntryClassname)) {
-        //determineNewCheckoutErrorDisplay(allValid,  addressLine.id);
-    } else {
-        determineErrorDisplay(allValid, addressLine.id);
+    // delegate may be mocked to return boolean or object
+    const res = (isValidAddressLine as any)(v);
+
+    if (typeof res === 'boolean') {
+        return { ok: res, normalised: v };
+    }
+    if (res && typeof res === 'object' && 'ok' in res) {
+        return res as AddressLineCheckResult;
     }
 
-    return allValid;
+    // defensive fallback in case a mock returns undefined
+    return { ok: Boolean(res), normalised: v };
+}
+
+/** Boolean wrapper that reports via determineErrorDisplay. */
+export function validateAddressLine(
+    formId: string,
+    value: string,
+    opts: AddressLineCheckOptions = {}
+): boolean {
+    const res = validateAddressLineValue(value, opts);
+    determineErrorDisplay(res.ok, formId);
+    return res.ok;
+}
+
+/** Optional: wrapper that returns the normalised value too. */
+export function validateAddressLineReturnNormalised(
+    formId: string,
+    value: string,
+    opts: AddressLineCheckOptions = {}
+): AddressLineCheckResult {
+    const res = validateAddressLineValue(value, opts);
+    determineErrorDisplay(res.ok, formId);
+    return res;
 }
