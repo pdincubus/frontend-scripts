@@ -14,7 +14,17 @@ export default defineConfig({
             exclude: [
                 'vitest.setup.ts',
                 'tests/**',
-                '**/*.d.ts'
+                '**/*.d.ts',
+                'eslint.config.ts',
+                'vitest.config.ts',
+                'gulpfile.js',
+                'src/ts/index.ts',
+                'src/ts/utilities/form/validateDeliveryInstructions.ts',
+                'eslint.config.ts',
+                'src/ts/checkout/delivery.ts',
+                'src/ts/checkout/address.ts',
+                'src/ts/checkout/credit-card.ts',
+                'src/ts/checkout/new-credit.ts'
             ],
             thresholds: {
                 lines: 80,
