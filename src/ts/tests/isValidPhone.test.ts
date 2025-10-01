@@ -21,9 +21,24 @@ describe('isValidPhone defaults (any, domestic only)', () => {
 });
 
 describe('isValidPhone with international flags', () => {
-  it('accepts +44 when allowInternational is true', () => {
-    expect(isValidPhone('+447912345678', { allowInternational: true })).toBe(true);
-    expect(isValidPhone('+44 20 7946 0000', { allowInternational: true })).toBe(true);
+  it("accepts +44 when allowInternational is true", () => {
+    expect(isValidPhone("+447912345678", { allowInternational: true })).toBe(true);
+    expect(isValidPhone("+44 20 7946 0000", { allowInternational: true })).toBe(true);
+    expect(isValidPhone("+44 7911 123 456", { allowInternational: true })).toBe(true);
+    // reject +44 with local 0 after country code
+    expect(isValidPhone("+44 07911 123 456", { allowInternational: true })).toBe(false);
+  });
+
+  it('accepts UK landline 020 format', () => {
+      expect(isValidPhone('020 7946 0958')).toBe(true);
+  });
+
+  it('accepts +44 mobile when allowInternational', () => {
+      expect(isValidPhone('+44 7911 123456', { allowInternational: true })).toBe(true);
+  });
+
+  it('rejects mixed +44 with leading 0', () => {
+      expect(isValidPhone('+44 07911 123456', { allowInternational: true })).toBe(false);
   });
 
   it('accepts bare 44 when allowBareCountryCode is true', () => {

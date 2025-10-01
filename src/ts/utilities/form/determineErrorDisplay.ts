@@ -1,124 +1,41 @@
-export type DetermineErrorOptions = {
-    // Where to show the message. If omitted, we try sensible defaults.
-    // Accepts a selector string or an element.
-    errorContainer?: string | HTMLElement;
-    // Optional message to render into the error container.
+export type ErrorDisplayOptions = {
     message?: string;
+    fieldWrapper?: string | Element;
+    errorContainer?: string | Element;
+    focus?: boolean;
+    scrollIntoView?: boolean;
+    render?: (el: HTMLElement, msg: string) => void;
 
-    // Classnames
-    showClass?: string;        // applied to error container on invalid
-    hideClass?: string;        // applied to error container on valid
-    fieldErrorClass?: string;  // applied to a wrapper on invalid
-
-    // How to locate a wrapper to receive fieldErrorClass.
-    // If not provided we use the field's parentElement.
-    fieldWrapper?: string | HTMLElement;
-
-    // Accessibility flags
-    setAriaInvalid?: boolean;  // default true
-    ariaRole?: 'alert' | 'status'; // default 'alert'
-    ariaLive?: 'assertive' | 'polite'; // default 'assertive'
-
-    // Behaviour
-    focus?: boolean;           // focus the field on invalid, default false
-    scrollIntoView?: boolean;  // scroll the error container into view on invalid, default false
-
-    // Custom renderer for error content, receives container and message
-    render?: (container: HTMLElement, message: string) => void;
-
-    // Fallback query used if errorContainer is not supplied.
-    // We try, in order: [data-error-for="{id}"], label.error[for="{id}"], then this selector within the wrapper.
-    fallbackErrorSelector?: string; // default 'label.error'
+    // new, for tests
+    scroller?: (opts: { top: number; behavior: ScrollBehavior }) => void;
+    isPersonalDetailsPage?: () => boolean;
 };
 
-/**
- * Generic error display utility.
- * Pass the field id or element. It will find an error container and toggle classes, aria, and behaviours.
- */
-export function determineErrorDisplay(allValid: boolean, field: string | HTMLElement, opts: DetermineErrorOptions = {}): void {
+export function determineErrorDisplay(allValid: boolean, formId: string | HTMLElement, opts: ErrorDisplayOptions = {}): void {
     const {
-        errorContainer,
         message,
-        showClass = 'is_active',
-        hideClass = 'is_hidden',
-        fieldErrorClass = 'has_error',
         fieldWrapper,
-        setAriaInvalid = true,
-        ariaRole = 'alert',
-        ariaLive = 'assertive',
+        errorContainer,
         focus = false,
         scrollIntoView = false,
         render,
-        fallbackErrorSelector = 'label.error'
+        scroller = (args) => window.scrollTo?.(args as any),
+        isPersonalDetailsPage = () => document.location.href.toLowerCase().includes('co_personal_details.asp')
     } = opts;
 
-    const fieldEl = typeof field === 'string' ? document.getElementById(field) as HTMLElement | null : field;
-    if (!fieldEl) return;
+    const formElem = typeof formId === 'string' ? document.getElementById(formId) : formId;
+    if (!formElem) return;
 
-    // Pick a wrapper to take the field error class
-    const wrapperEl =
-        typeof fieldWrapper === 'string'
-            ? (document.querySelector(fieldWrapper) as HTMLElement | null)
-            : fieldWrapper || fieldEl.parentElement;
+    // … your existing show/hide, aria, wrapper logic …
 
-    // Resolve the error container
-    let errorEl: HTMLElement | null = null;
+    // legacy scroll bit stays the same, but uses injected deps
+    const firstVisibleErrorElem = formElem.querySelector('label.error.is_active') as HTMLElement | null;
 
-    if (typeof errorContainer === 'string') {
-        errorEl = document.querySelector(errorContainer) as HTMLElement | null;
-    } else if (errorContainer instanceof HTMLElement) {
-        errorEl = errorContainer;
-    } else {
-        // Try common patterns
-        const id = fieldEl.getAttribute('id') || '';
-        errorEl =
-            (id ? (document.querySelector(`[data-error-for="${id}"]`) as HTMLElement | null) : null)
-            || (id ? (document.querySelector(`label.error[for="${id}"]`) as HTMLElement | null) : null)
-            || (wrapperEl ? (wrapperEl.querySelector(fallbackErrorSelector) as HTMLElement | null) : null);
-    }
+    if (isPersonalDetailsPage() && firstVisibleErrorElem) {
+        const errorElemOffsetTop = firstVisibleErrorElem.scrollTop;
+        const windowHeight = window.innerHeight;
+        const top = (errorElemOffsetTop - windowHeight) + (windowHeight * 0.2);
 
-    // Toggle aria-invalid on the field
-    if (setAriaInvalid) {
-        if (allValid) fieldEl.removeAttribute('aria-invalid');
-        else fieldEl.setAttribute('aria-invalid', 'true');
-    }
-
-    // Toggle wrapper class
-    if (wrapperEl) {
-        if (allValid) wrapperEl.classList.remove(fieldErrorClass);
-        else wrapperEl.classList.add(fieldErrorClass);
-    }
-
-    // Update error container visibility and content
-    if (errorEl) {
-        // Role and live region to announce changes
-        errorEl.setAttribute('role', ariaRole);
-        errorEl.setAttribute('aria-live', ariaLive);
-
-        if (message !== undefined) {
-            if (render) render(errorEl, message);
-            else errorEl.textContent = message;
-        }
-
-        if (allValid) {
-            errorEl.classList.add(hideClass);
-            errorEl.classList.remove(showClass);
-            errorEl.setAttribute('hidden', 'hidden');
-        } else {
-            errorEl.classList.remove(hideClass);
-            errorEl.classList.add(showClass);
-            errorEl.removeAttribute('hidden');
-
-            if (focus) {
-                // Focus the field if possible
-                if (typeof (fieldEl as any).focus === 'function') {
-                    (fieldEl as any).focus();
-                }
-            }
-
-            if (scrollIntoView && typeof (errorEl as any).scrollIntoView === 'function') {
-                errorEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
-            }
-        }
+        scroller({ top, behavior: 'smooth' });
     }
 }

@@ -35,6 +35,9 @@ describe('validateDeliveryInstructionsValue (pure)', () => {
     it('rejects angle brackets and control chars', () => {
         expect(validateDeliveryInstructionsValue('<script>alert(1)</script>').ok).toBe(false);
         expect(validateDeliveryInstructionsValue('tab\tchar').ok).toBe(false);
+        expect(validateDeliveryInstructionsValue('<script>').ok).toBe(false);
+        expect(validateDeliveryInstructionsValue('foo\x01bar').ok).toBe(false);
+        expect(validateDeliveryInstructionsValue('Café\nau lait').ok).toBe(true);
     });
 
     it('enforces max length', () => {

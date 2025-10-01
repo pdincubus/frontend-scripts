@@ -1,62 +1,64 @@
+// src/ts/utilities/form/validateAddressLine.ts
+import { isValidAddressLine } from './isValidAddressLine.js';
 import { determineErrorDisplay } from './determineErrorDisplay.js';
-import {
-    isValidAddressLine,
-    normaliseAddressLine,
-    type AddressLineCheckOptions,
-    type AddressLineCheckResult
-} from './isValidAddressLine.js';
 
-export { normaliseAddressLine } from './isValidAddressLine.js';
+export type AddressLineOptions = {
+    required?: boolean;   // default true
+    maxLength?: number;   // default 100
+};
 
-/** Pure value validator kept for tests. */
-export function validateAddressLineValue(
-    value: string,
-    opts: AddressLineCheckOptions = {}
-): AddressLineCheckResult {
-    const { required = true } = opts;
+export type AddressLineResult = {
+    ok: boolean;
+    normalised: string;
+    message?: string;
+};
 
-    // normalise first, then decide emptiness
-    const v = normaliseAddressLine(value, true, true);
-
-    // empty handling must not hit the delegate
-    if (v.length === 0) {
-        return required
-            ? { ok: false, normalised: v, message: 'Enter at least 1 characters.' }
-            : { ok: true, normalised: v };
-    }
-
-    // delegate may be mocked to return boolean or object
-    const res = (isValidAddressLine as any)(v);
-
-    if (typeof res === 'boolean') {
-        return { ok: res, normalised: v };
-    }
-    if (res && typeof res === 'object' && 'ok' in res) {
-        return res as AddressLineCheckResult;
-    }
-
-    // defensive fallback in case a mock returns undefined
-    return { ok: Boolean(res), normalised: v };
+export function normaliseAddressLine(value: string): string {
+    // collapse any whitespace to single spaces and trim
+    return String(value ?? '').replace(/\s+/g, ' ').trim();
 }
 
-/** Boolean wrapper that reports via determineErrorDisplay. */
+export function validateAddressLineValue(
+    value: string,
+    opts: AddressLineOptions = {}
+): AddressLineResult {
+    const {
+        required = true,
+        maxLength = 100
+    } = opts;
+
+    const v = normaliseAddressLine(value);
+
+    // empty handling
+    if (!required && v.length === 0) {
+        return { ok: true, normalised: v };
+    }
+    if (required && v.length === 0) {
+        return { ok: false, normalised: v, message: 'Enter an address line.' };
+    }
+
+    // enforce maxLength before consulting legacy validator
+    if (v.length > maxLength) {
+        return { ok: false, normalised: v, message: `Use at most ${maxLength} characters.` };
+    }
+
+    // reject control characters (keep it simple, printable only)
+    if (/[\x00-\x1F\x7F]/.test(v)) {
+        return { ok: false, normalised: v, message: 'Remove control characters.' };
+    }
+
+    const ok = isValidAddressLine(v);
+    return ok
+        ? { ok: true, normalised: v }
+        : { ok: false, normalised: v, message: 'Enter a valid address line.' };
+}
+
 export function validateAddressLine(
     formId: string,
     value: string,
-    opts: AddressLineCheckOptions = {}
+    opts: AddressLineOptions = {}
 ): boolean {
     const res = validateAddressLineValue(value, opts);
     determineErrorDisplay(res.ok, formId);
     return res.ok;
-}
-
-/** Optional: wrapper that returns the normalised value too. */
-export function validateAddressLineReturnNormalised(
-    formId: string,
-    value: string,
-    opts: AddressLineCheckOptions = {}
-): AddressLineCheckResult {
-    const res = validateAddressLineValue(value, opts);
-    determineErrorDisplay(res.ok, formId);
-    return res;
 }
